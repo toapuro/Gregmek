@@ -1,0 +1,21 @@
+package dev.tdnpgm.gregmek.registry;
+
+import dev.tdnpgm.gregmek.Gregmek;
+import dev.tdnpgm.gregmek.gui.GuiAssembler;
+import mekanism.client.ClientRegistrationUtil;
+import net.minecraft.core.registries.Registries;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegisterEvent;
+
+@Mod.EventBusSubscriber(modid = Gregmek.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class GregmekClientRegistration {
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void registerContainers(RegisterEvent event) {
+        event.register(Registries.MENU, helper -> {
+            ClientRegistrationUtil.registerScreen(GregmekContainerTypes.ASSEMBLER, GuiAssembler::new);
+        });
+    }
+}

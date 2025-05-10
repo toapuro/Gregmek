@@ -1,0 +1,39 @@
+package dev.tdnpgm.gregmek.recipes;
+
+import mekanism.api.recipes.MekanismRecipe;
+import dev.tdnpgm.gregmek.utils.GregmekUtils;
+import mekanism.api.recipes.MekanismRecipe;
+import mekanism.api.recipes.ingredients.FluidStackIngredient;
+import mekanism.api.recipes.ingredients.ItemStackIngredient;
+import mekanism.common.recipe.MekanismRecipeType;
+import mekanism.common.recipe.lookup.cache.DoubleInputRecipeCache;
+import mekanism.common.recipe.lookup.cache.type.FluidInputCache;
+import mekanism.common.recipe.lookup.cache.type.ItemInputCache;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+
+public class GregmekInputRecipeCache {
+    public static class ItemFluid<
+            RECIPE extends MekanismRecipe & BiPredicate<ItemStack, FluidStack>> extends DoubleInputRecipeCache<ItemStack, ItemStackIngredient, FluidStack, FluidStackIngredient, RECIPE, ItemInputCache<RECIPE>, FluidInputCache<RECIPE>> {
+        public ItemFluid(MekanismRecipeType<RECIPE, ?> recipeType, Function<RECIPE, ItemStackIngredient> inputAExtractor, Function<RECIPE, FluidStackIngredient> inputBExtractor) {
+            super(recipeType, inputAExtractor, new ItemInputCache<>(), inputBExtractor, new FluidInputCache<>());
+        }
+    }
+
+    public static class ItemsFluids<
+            RECIPE extends MekanismRecipe & BiPredicate<List<ItemStack>, List<FluidStack>>> extends DoubleMultipleShapelessRecipeCache<ItemStack, ItemStackIngredient, FluidStack, FluidStackIngredient, RECIPE, ItemInputCache<RECIPE>, FluidInputCache<RECIPE>> {
+        public ItemsFluids(MekanismRecipeType<RECIPE, ?> recipeType, Function<RECIPE, List<ItemStackIngredient>> inputsAExtractor, Function<RECIPE, List<FluidStackIngredient>> inputsBExtractor, int solidSlots, int fluidSlots) {
+            super(
+                    recipeType,
+                    inputsAExtractor,
+                    GregmekUtils.generateNList(ItemInputCache::new, solidSlots),
+                    inputsBExtractor,
+                    GregmekUtils.generateNList(FluidInputCache::new, fluidSlots)
+            );
+        }
+    }
+}
