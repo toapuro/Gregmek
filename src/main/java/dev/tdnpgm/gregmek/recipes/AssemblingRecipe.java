@@ -1,21 +1,14 @@
 package dev.tdnpgm.gregmek.recipes;
 
-import dev.tdnpgm.gregmek.utils.GregmekUtils;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
-import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
-import mekanism.common.integration.projecte.IngredientHelper;
-import mekanism.common.recipe.ingredient.creator.ItemStackIngredientCreator;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.extensions.IForgeIntrinsicHolderTagAppender;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -80,32 +73,31 @@ public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredi
     }
 
     public boolean test(List<ItemStack> solids, List<FluidStack> liquid) {
-        for (ItemStack itemStack : solids) {
-            if (inputSolids.stream().noneMatch(itemStackIngredient -> itemStackIngredient.testType(itemStack))) {
+        for (ItemStackIngredient inputSolid : inputSolids) {
+            if (solids.stream().noneMatch(inputSolid::testType)) {
                 return false;
             }
         }
 
-        return true;
-//        Optional<FluidStack> firstFluid = liquid.stream().findFirst();
-//        return firstFluid.filter(inputFluid::testType).isPresent();
-
+        Optional<FluidStack> firstFluid = liquid.stream().findFirst();
+        return firstFluid.isPresent() && inputFluid.testType(firstFluid.get());
     }
 
-    public AssemblingRecipeOutput getOutputDefinition() {
-        return new AssemblingRecipeOutput(this.outputItem);
+    public ItemStack getOutputDefinition() {
+        return this.outputItem;
     }
 
     @Contract(
-            value = "_, _ -> new",
+            value = "-> new",
             pure = true
     )
-    public AssemblingRecipeOutput getOutput(List<ItemStack> solid, FluidStack liquid) {
-        return new AssemblingRecipeOutput(this.outputItem.copy());
+    public ItemStack getOutput() {
+        return this.outputItem.copy();
     }
 
     public boolean isIncomplete() {
-        return this.inputSolids.stream().anyMatch(InputIngredient::hasNoMatchingInstances) || this.inputFluid.hasNoMatchingInstances();
+        return false;
+//        return this.inputSolids.stream().anyMatch(InputIngredient::hasNoMatchingInstances) || this.inputFluid.hasNoMatchingInstances();
     }
 
     public void write(FriendlyByteBuf buffer) {
@@ -117,20 +109,5 @@ public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredi
         this.energyRequired.writeToBuffer(buffer);
         buffer.writeVarInt(this.duration);
         buffer.writeItem(this.outputItem);
-    }
-
-    public static record AssemblingRecipeOutput(@NotNull ItemStack item) {
-        public AssemblingRecipeOutput(@NotNull ItemStack item) {
-            Objects.requireNonNull(item, "Item output cannot be null.");
-            if (item.isEmpty()) {
-                throw new IllegalArgumentException("Item output cannot be present.");
-            } else {
-                this.item = item;
-            }
-        }
-
-        public @NotNull ItemStack item() {
-            return this.item;
-        }
     }
 }

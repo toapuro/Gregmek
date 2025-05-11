@@ -1,5 +1,6 @@
-package dev.tdnpgm.gregmek.recipes;
+package dev.tdnpgm.gregmek.recipes.jei;
 
+import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
 import dev.tdnpgm.gregmek.registry.GregmekBlocks;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.client.gui.element.GuiUpArrow;
@@ -13,7 +14,6 @@ import mekanism.client.gui.element.slot.SlotType;
 import mekanism.client.jei.BaseRecipeCategory;
 import mekanism.client.jei.MekanismJEIRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
-import mekanism.common.registries.MekanismBlocks;
 import mekanism.common.tile.component.config.DataType;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -39,14 +39,14 @@ public class AssemblerRecipeCategory extends BaseRecipeCategory<AssemblingRecipe
             int slotXIndex = i % 3;
             int slotYIndex = i / 3;
 
-            inputs.add(this.addSlot(SlotType.INPUT, 15+20* (slotXIndex), 17+20*slotYIndex));
+            inputs.add(this.addSlot(SlotType.INPUT, 15+18* (slotXIndex), 17+18*slotYIndex));
         }
 
-        this.output = this.addSlot(SlotType.OUTPUT, 116, 35);
-        this.inputFluid = this.addElement(GuiFluidGauge.getDummy(GaugeType.STANDARD.with(DataType.INPUT), this, 60, 17));
+        this.output = this.addSlot(SlotType.OUTPUT, 130, 35);
+        this.inputFluid = this.addElement(GuiFluidGauge.getDummy(GaugeType.STANDARD.with(DataType.INPUT), this, 45, 17));
         this.addSlot(SlotType.POWER, 39, 35).with(SlotOverlay.POWER);
         this.addElement(new GuiVerticalPowerBar(this, FULL_BAR, 164, 15));
-        this.addSimpleProgress(ProgressType.BAR, 86, 38);
+        this.addSimpleProgress(ProgressType.BAR, 100, 38);
     }
 
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, AssemblingRecipe recipe, @NotNull IFocusGroup focusGroup) {
@@ -55,6 +55,6 @@ public class AssemblerRecipeCategory extends BaseRecipeCategory<AssemblingRecipe
             this.initItem(builder, RecipeIngredientRole.INPUT, this.inputs.get(i), inputSolids.get(i).getRepresentations());
         }
         this.initFluid(builder, RecipeIngredientRole.INPUT, this.inputFluid, recipe.getInputFluid().getRepresentations());
-        this.initItem(builder, RecipeIngredientRole.OUTPUT, this.output, Collections.singletonList(recipe.getOutputDefinition().item()));
+        this.initItem(builder, RecipeIngredientRole.OUTPUT, this.output, Collections.singletonList(recipe.getOutputDefinition()));
     }
 }

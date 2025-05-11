@@ -1,8 +1,7 @@
-package dev.tdnpgm.gregmek.recipes;
+package dev.tdnpgm.gregmek.recipes.lookup.cache;
 
 import mekanism.api.recipes.MekanismRecipe;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
-import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.common.recipe.MekanismRecipeType;
@@ -26,13 +25,13 @@ public class GregmekInputRecipeCache {
 
     public static class ItemsFluids<
             RECIPE extends MekanismRecipe & BiPredicate<List<ItemStack>, List<FluidStack>>> extends DoubleMultipleShapelessRecipeCache<ItemStack, ItemStackIngredient, FluidStack, FluidStackIngredient, RECIPE, ItemInputCache<RECIPE>, FluidInputCache<RECIPE>> {
-        public ItemsFluids(MekanismRecipeType<RECIPE, ?> recipeType, Function<RECIPE, List<ItemStackIngredient>> inputsAExtractor, Function<RECIPE, List<FluidStackIngredient>> inputsBExtractor, int solidSlots, int fluidSlots) {
+        public ItemsFluids(MekanismRecipeType<RECIPE, ?> recipeType, Function<RECIPE, List<ItemStackIngredient>> inputsAExtractor, Function<RECIPE, List<FluidStackIngredient>> inputsBExtractor, int maxSolidInputs, int maxFluidSlots) {
             super(
                     recipeType,
                     inputsAExtractor,
-                    GregmekUtils.generateNList(ItemInputCache::new, solidSlots),
+                    GregmekUtils.generateNList(ItemInputCache::new, maxSolidInputs),
                     inputsBExtractor,
-                    GregmekUtils.generateNList(FluidInputCache::new, fluidSlots)
+                    GregmekUtils.generateNList(FluidInputCache::new, maxFluidSlots)
             );
         }
     }

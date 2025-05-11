@@ -1,7 +1,7 @@
 package dev.tdnpgm.gregmek.registry;
 
 import dev.tdnpgm.gregmek.Gregmek;
-import dev.tdnpgm.gregmek.recipes.AssemblingIRecipe;
+import dev.tdnpgm.gregmek.recipes.impl.AssemblingIRecipe;
 import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
 import dev.tdnpgm.gregmek.recipes.AssemblingRecipeSerializer;
 import mekanism.common.registration.impl.RecipeSerializerDeferredRegister;

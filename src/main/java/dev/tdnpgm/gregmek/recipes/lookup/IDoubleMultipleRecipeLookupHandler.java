@@ -1,5 +1,7 @@
-package dev.tdnpgm.gregmek.recipes;
+package dev.tdnpgm.gregmek.recipes.lookup;
 
+import dev.tdnpgm.gregmek.recipes.lookup.cache.DoubleMultipleShapelessRecipeCache;
+import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.common.recipe.lookup.IRecipeLookupHandler;

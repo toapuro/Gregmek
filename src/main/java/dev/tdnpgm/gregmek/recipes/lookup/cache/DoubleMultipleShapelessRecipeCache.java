@@ -1,9 +1,8 @@
-package dev.tdnpgm.gregmek.recipes;
+package dev.tdnpgm.gregmek.recipes.lookup.cache;
 
 import dev.tdnpgm.gregmek.Gregmek;
 import mekanism.api.recipes.MekanismRecipe;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
-import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.cache.AbstractInputRecipeCache;
@@ -11,7 +10,6 @@ import mekanism.common.recipe.lookup.cache.type.IInputCache;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,17 +33,13 @@ public class DoubleMultipleShapelessRecipeCache<
 
     protected DoubleMultipleShapelessRecipeCache(MekanismRecipeType<RECIPE, ?> recipeType, Function<RECIPE, List<INGREDIENT_TYPE_A>> inputsAExtractor, List<CACHE_A> cachesA, Function<RECIPE, List<INGREDIENT_TYPE_B>> inputsBExtractor, List<CACHE_B> cachesB) {
         super(recipeType);
-//        Gregmek.DEBUG_LOGGER.info("Initiating DoubleMultipleShapelessRecipeCache {}", recipeType.toString());
-        this.complexIngredientsA = Collections.unmodifiableList(
-                GregmekUtils.generateNList(HashSet::new, cachesA.size())
-        );
-        this.complexIngredientsB = Collections.unmodifiableList(
-                GregmekUtils.generateNList(HashSet::new, cachesB.size())
-        );
+        this.complexIngredientsA = GregmekUtils.generateNList(HashSet::new, cachesA.size());
+        this.complexIngredientsB = GregmekUtils.generateNList(HashSet::new, cachesB.size());
         this.inputsAExtractor = inputsAExtractor;
         this.inputsBExtractor = inputsBExtractor;
-        this.cachesA = Collections.unmodifiableList(cachesA);
-        this.cachesB = Collections.unmodifiableList(cachesB);
+
+        this.cachesA = cachesA;
+        this.cachesB = cachesB;
     }
 
     public void clear() {
@@ -88,38 +82,16 @@ public class DoubleMultipleShapelessRecipeCache<
     protected <INPUT_TYPE_1, INGREDIENT_TYPE_1 extends InputIngredient<INPUT_TYPE_1>, CACHE_1 extends IInputCache<INPUT_TYPE_1, INGREDIENT_TYPE_1, RECIPE>,
             INPUT_TYPE_2, INGREDIENT_TYPE_2 extends InputIngredient<INPUT_TYPE_2>, CACHE_2 extends IInputCache<INPUT_TYPE_2, INGREDIENT_TYPE_2, RECIPE>>
             boolean containsInputsPairing(@Nullable Level world, List<INPUT_TYPE_1> inputs1, Function<RECIPE, List<INGREDIENT_TYPE_1>> inputs1Extractor, List<CACHE_1> caches1, List<Set<RECIPE>> complexIngredients1, List<INPUT_TYPE_2> inputs2, Function<RECIPE, List<INGREDIENT_TYPE_2>> inputs2Extractor, List<CACHE_2> caches2, List<Set<RECIPE>> complexIngredients2) {
-        return containsInputs(world, inputs1, inputs1Extractor, caches1) &&
+        return containsInputs(world, inputs1, inputs1Extractor, caches1) ||
                 containsInputs(world, inputs2, inputs2Extractor, caches2);
-
-//        for (int i = 0; i < inputs1.size(); i++) {
-//            INPUT_TYPE_1 input = inputs1.get(i);
-//            int matched = 0;
-//
-//            for (int j = 0; j < caches1.size(); j++) {
-//                CACHE_1 cache = caches1.get(i);
-//
-//                if(containsInput(world, input, getInputExtractor(inputs1Extractor, i), cache, complexRecipes)) {
-//                    matched++;
-//                }
-//            }
-//
-//            if(matched == 0) {
-//                return false;
-//            }
-//        }
-//
-//        return true;
-
     }
 
 
     public <INPUT_TYPE, INGREDIENT_TYPE extends InputIngredient<INPUT_TYPE>,
             CACHE extends IInputCache<INPUT_TYPE, INGREDIENT_TYPE, RECIPE>> boolean containsInput(@Nullable Level world, INPUT_TYPE input, Function<RECIPE, List<INGREDIENT_TYPE>> inputsExtractor, List<CACHE> caches) {
-        Gregmek.DEBUG_LOGGER.info("containsInput {}", input.getClass().getName());
         for (int i = 0; i < caches.size(); i++) {
             CACHE cache = caches.get(i);
-            if(containsInput(world, input, getInputExtractor(inputsExtractor, i), cache, complexRecipes)) {
-                Gregmek.DEBUG_LOGGER.info("true");
+            if (containsInput(world, input, inputsExtractor, i, cache, complexRecipes)) {
                 return true;
             }
         }
@@ -127,19 +99,36 @@ public class DoubleMultipleShapelessRecipeCache<
         return false;
     }
 
+    protected <INPUT, INGREDIENT extends InputIngredient<INPUT>, CACHE extends IInputCache<INPUT, INGREDIENT, RECIPE>> boolean containsInput(@Nullable Level world, INPUT input, Function<RECIPE, List<INGREDIENT>> inputsExtractor, int ingredientIndex, CACHE cache, Set<RECIPE> complexRecipes)  {
+        if (cache.isEmpty(input)) {
+            return false;
+        } else {
+            this.initCacheIfNeeded(world);
+            return cache.contains(input) || complexRecipes.stream().anyMatch((recipe) -> {
+                List<INGREDIENT> ingredients = inputsExtractor.apply(recipe);
+                if(ingredients.size() <= ingredientIndex) {
+                    return false;
+                }
+
+                INGREDIENT ingredient = ingredients.get(ingredientIndex);
+
+                return ingredient.testType(input);
+            });
+        }
+    }
+
     public <INPUT_TYPE, INGREDIENT_TYPE extends InputIngredient<INPUT_TYPE>,
             CACHE extends IInputCache<INPUT_TYPE, INGREDIENT_TYPE, RECIPE>> boolean containsInputs(@Nullable Level world, List<INPUT_TYPE> inputs, Function<RECIPE, List<INGREDIENT_TYPE>> inputsExtractor, List<CACHE> caches) {
-//        Gregmek.DEBUG_LOGGER.info("containsInputs {}", inputs.size());
         this.initCacheIfNeeded(world);
 
-        for (int i = 0; i < inputs.size(); i++) {
-            INPUT_TYPE input = inputs.get(i);
+        for (INPUT_TYPE input : inputs) {
             int matched = 0;
 
-            for (int j = 0; j < caches.size(); j++) {
+            for (int i = 0; i < caches.size(); i++) {
                 CACHE cache = caches.get(i);
-                if(containsInput(world, input, getInputExtractor(inputsExtractor, i), cache, complexRecipes)) {
+                if(containsInput(world, input, inputsExtractor, i, cache, complexRecipes)) {
                     matched++;
+                    break;
                 }
             }
 
@@ -152,11 +141,12 @@ public class DoubleMultipleShapelessRecipeCache<
     }
 
     public @Nullable RECIPE findFirstRecipe(@Nullable Level world, List<INPUT_TYPE_A> inputsA, List<INPUT_TYPE_B> inputsB) {
-        Gregmek.DEBUG_LOGGER.info("findFirstRecipe A:{} B:{}", inputsA.size(), inputsB.size());
+        Gregmek.DEBUG_LOGGER.info("findFirstRecipe");
         this.initCacheIfNeeded(world);
+
         Predicate<RECIPE> matchPredicate = (r) -> r.test(inputsA, inputsB);
-        for (CACHE_A cacheA : cachesA) {
-            for (INPUT_TYPE_A inputTypeA : inputsA) {
+        for (INPUT_TYPE_A inputTypeA : inputsA) {
+            for (CACHE_A cacheA : cachesA) {
                 RECIPE firstRecipe = cacheA.findFirstRecipe(inputTypeA, matchPredicate);
                 if (firstRecipe != null) {
                     return firstRecipe;
@@ -168,24 +158,16 @@ public class DoubleMultipleShapelessRecipeCache<
     }
 
     protected void initCache(List<RECIPE> recipes) {
-        Gregmek.DEBUG_LOGGER.info("InitCache recipe id: {} class: {}, type: {}, type object: {}, object: {}",
-        recipeType.getRegistryName(),
-        recipeType.getClass(),
-        recipeType.getRecipeType(),
-        Integer.toHexString(recipeType.getRecipeType().hashCode()),
-        Integer.toHexString(recipeType.hashCode()));
-        Gregmek.DEBUG_LOGGER.info("initCache recipes:{}", recipes.size());
         for(RECIPE recipe : recipes) {
             boolean complex = false;
-
-            for (int i = 0; i < cachesA.size(); i++) {
+            for (int i = 0; i < inputsAExtractor.apply(recipe).size(); i++) {
                 CACHE_A cacheA = cachesA.get(i);
                 cacheA.mapInputs(recipe, getInputExtractor(inputsAExtractor, i).apply(recipe));
                 complexIngredientsA.get(i).add(recipe);
                 complex = true;
             }
 
-            for (int i = 0; i < cachesB.size(); i++) {
+            for (int i = 0; i < inputsBExtractor.apply(recipe).size(); i++) {
                 CACHE_B cacheB = cachesB.get(i);
                 cacheB.mapInputs(recipe, getInputExtractor(inputsBExtractor, i).apply(recipe));
                 complexIngredientsB.get(i).add(recipe);
@@ -196,9 +178,5 @@ public class DoubleMultipleShapelessRecipeCache<
                 this.complexRecipes.add(recipe);
             }
         }
-
-    }
-
-    public record CacheExtractorMap<CACHE, RECIPE, INGREDIENT>(CACHE cache, Function<RECIPE, INGREDIENT> inputExtractor, Set<RECIPE> complexIngredient) {
     }
 }

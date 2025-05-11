@@ -31,20 +31,16 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
     }
 
     public @NotNull RECIPE fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
-        JsonElement itemInputs = (JsonElement)(GsonHelper.isArrayNode(json, "itemInputs") ? GsonHelper.getAsJsonArray(json, "itemInputs") : GsonHelper.getAsJsonObject(json, "itemInputs"));
-
-        Gregmek.DEBUG_LOGGER.info("Registering Assembling Recipe JSON: {}", json.toString());
-
+        JsonElement itemInputs = GsonHelper.isArrayNode(json, "itemInputs") ? GsonHelper.getAsJsonArray(json, "itemInputs") : GsonHelper.getAsJsonObject(json, "itemInputs");
         List<ItemStackIngredient> ingredients = new ArrayList<>();
         Iterable<JsonElement> jsonElements = itemInputs.isJsonArray() ? itemInputs.getAsJsonArray() : itemInputs.getAsJsonObject().asMap().values();
         for (JsonElement itemInput : jsonElements) {
-            ItemStackIngredient solidIngredient = (ItemStackIngredient)IngredientCreatorAccess.item().deserialize(itemInput);
+            ItemStackIngredient solidIngredient = IngredientCreatorAccess.item().deserialize(itemInput);
             ingredients.add(solidIngredient);
-            Gregmek.DEBUG_LOGGER.info("Ingredient: {}", solidIngredient.toString());
         }
 
-        JsonElement fluidInput = (JsonElement)(GsonHelper.isArrayNode(json, "fluidInput") ? GsonHelper.getAsJsonArray(json, "fluidInput") : GsonHelper.getAsJsonObject(json, "fluidInput"));
-        FluidStackIngredient fluidIngredient = (FluidStackIngredient)IngredientCreatorAccess.fluid().deserialize(fluidInput);
+        JsonElement fluidInput = GsonHelper.isArrayNode(json, "fluidInput") ? GsonHelper.getAsJsonArray(json, "fluidInput") : GsonHelper.getAsJsonObject(json, "fluidInput");
+        FluidStackIngredient fluidIngredient = IngredientCreatorAccess.fluid().deserialize(fluidInput);
         FloatingLong energyRequired = FloatingLong.ZERO;
         if (json.has("energyRequired")) {
             energyRequired = SerializerHelper.getFloatingLong(json, "energyRequired");

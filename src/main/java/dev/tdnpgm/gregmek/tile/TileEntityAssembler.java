@@ -1,12 +1,12 @@
 package dev.tdnpgm.gregmek.tile;
 
+import dev.tdnpgm.gregmek.Gregmek;
 import dev.tdnpgm.gregmek.recipes.AssemblingCachedRecipe;
 import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
-import dev.tdnpgm.gregmek.recipes.GregmekInputRecipeCache;
-import dev.tdnpgm.gregmek.recipes.IDoubleMultipleRecipeLookupHandler;
+import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
+import dev.tdnpgm.gregmek.recipes.lookup.IDoubleMultipleRecipeLookupHandler;
 import dev.tdnpgm.gregmek.registry.GregmekBlocks;
 import dev.tdnpgm.gregmek.registry.recipe.GregmekRecipeType;
-import mekanism.api.recipes.MekanismRecipe;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.inventory.IInventorySlot;
@@ -127,7 +127,8 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
 
             InputInventorySlot slot = InputInventorySlot.at(
                     this::containsRecipeA,
-                    (stack) -> containsRecipeAB(Collections.singletonList(stack), Collections.singletonList(inputFluidTank.getFluid())), recipeCacheListener, 15+20* (slotXIndex), 17+20*slotYIndex);
+                    (stack) -> containsRecipeAB(Collections.singletonList(stack), Collections.singletonList(inputFluidTank.getFluid())), recipeCacheListener,
+                        15+18* (slotXIndex), 17+18*slotYIndex);
             this.inputSlots.add(slot);
             builder.addSlot(slot)
                     .tracksWarnings((slotWarning) ->
@@ -136,11 +137,11 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
 
 
 
-        builder.addSlot(this.outputSlot = OutputInventorySlot.at(listener, 116, 35))
+        builder.addSlot(this.outputSlot = OutputInventorySlot.at(listener, 130, 35))
                 .tracksWarnings((slot) ->
                         slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, this.getWarningCheck(RecipeError.NOT_ENOUGH_OUTPUT_SPACE)));
 
-        builder.addSlot(this.energySlot = EnergyInventorySlot.fillOrConvert(this.energyContainer, this::getLevel, listener, 116, 60));
+        builder.addSlot(this.energySlot = EnergyInventorySlot.fillOrConvert(this.energyContainer, this::getLevel, listener, 130, 60));
         return builder.build();
     }
 
@@ -155,16 +156,18 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
     }
 
     public @Nullable AssemblingRecipe getRecipe(int cacheIndex) {
-        return this.findFirstRecipeHandlers(itemInputHandlers, Collections.singletonList(fluidInputHandler));
+        AssemblingRecipe recipe = this.findFirstRecipeHandlers(itemInputHandlers, Collections.singletonList(fluidInputHandler));
+        Gregmek.DEBUG_LOGGER.info("getRecipe: {}",
+                recipe != null ? recipe.getId() : "NOT FOUND");
+        return recipe;
     }
 
     public @NotNull CachedRecipe<AssemblingRecipe> createNewCachedRecipe(@NotNull AssemblingRecipe recipe, int cacheIndex) {
-        CachedRecipe<AssemblingRecipe> cachedRecipe = new AssemblingCachedRecipe(recipe, this.recheckAllRecipeErrors, this.itemInputHandlers, this.fluidInputHandler, this.outputHandler)
+        Objects.requireNonNull(this.energyContainer);
+        return new AssemblingCachedRecipe(recipe, this.recheckAllRecipeErrors, this.itemInputHandlers, this.fluidInputHandler, this.outputHandler)
                 .setErrorsChanged(this::onErrorsChanged)
                 .setCanHolderFunction(() -> MekanismUtils.canFunction(this))
-                .setActive(this::setActive);
-        Objects.requireNonNull(this.energyContainer);
-        return cachedRecipe
+                .setActive(this::setActive)
                 .setEnergyRequirements(this.energyContainer::getEnergyPerTick, this.energyContainer)
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)

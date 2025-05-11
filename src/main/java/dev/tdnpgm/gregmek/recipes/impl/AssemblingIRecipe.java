@@ -1,9 +1,9 @@
-package dev.tdnpgm.gregmek.recipes;
+package dev.tdnpgm.gregmek.recipes.impl;
 
+import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
 import dev.tdnpgm.gregmek.registry.GregmekBlocks;
 import dev.tdnpgm.gregmek.registry.GregmekRecipeSerializers;
 import dev.tdnpgm.gregmek.registry.recipe.GregmekRecipeType;
-import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
