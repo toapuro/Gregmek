@@ -1,8 +1,7 @@
 package dev.tdnpgm.gregmek.recipes.lookup.cache;
 
-import dev.tdnpgm.gregmek.Gregmek;
-import mekanism.api.recipes.MekanismRecipe;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
+import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.cache.AbstractInputRecipeCache;
@@ -141,7 +140,6 @@ public class DoubleMultipleShapelessRecipeCache<
     }
 
     public @Nullable RECIPE findFirstRecipe(@Nullable Level world, List<INPUT_TYPE_A> inputsA, List<INPUT_TYPE_B> inputsB) {
-        Gregmek.DEBUG_LOGGER.info("findFirstRecipe");
         this.initCacheIfNeeded(world);
 
         Predicate<RECIPE> matchPredicate = (r) -> r.test(inputsA, inputsB);

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class AssemblingIRecipe extends AssemblingRecipe {
-    public AssemblingIRecipe(ResourceLocation id, List<ItemStackIngredient> inputSolids, FluidStackIngredient inputFluid, FloatingLong energyRequired, int duration, ItemStack outputItem) {
+    public AssemblingIRecipe(ResourceLocation id, List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluid, FloatingLong energyRequired, int duration, ItemStack outputItem) {
         super(id, inputSolids, inputFluid, energyRequired, duration, outputItem);
     }
 

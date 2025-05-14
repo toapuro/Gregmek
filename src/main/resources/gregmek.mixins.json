@@ -6,7 +6,6 @@
   "refmap": "gregmek.refmap.json",
   "mixins": [
     "MekanismJEIMixin",
-    "MekanismRecipeTypeMixin",
     "accessor.MekanismRecipeTypeAccessor"
   ],
   "client": [

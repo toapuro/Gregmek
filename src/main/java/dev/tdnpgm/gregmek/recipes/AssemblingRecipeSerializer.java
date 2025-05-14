@@ -6,7 +6,6 @@ package dev.tdnpgm.gregmek.recipes;//
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import dev.tdnpgm.gregmek.Gregmek;
 import mekanism.api.SerializerHelper;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
@@ -32,15 +31,22 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
 
     public @NotNull RECIPE fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
         JsonElement itemInputs = GsonHelper.isArrayNode(json, "itemInputs") ? GsonHelper.getAsJsonArray(json, "itemInputs") : GsonHelper.getAsJsonObject(json, "itemInputs");
-        List<ItemStackIngredient> ingredients = new ArrayList<>();
+        List<ItemStackIngredient> itemIngredients = new ArrayList<>();
         Iterable<JsonElement> jsonElements = itemInputs.isJsonArray() ? itemInputs.getAsJsonArray() : itemInputs.getAsJsonObject().asMap().values();
         for (JsonElement itemInput : jsonElements) {
             ItemStackIngredient solidIngredient = IngredientCreatorAccess.item().deserialize(itemInput);
-            ingredients.add(solidIngredient);
+            itemIngredients.add(solidIngredient);
         }
 
-        JsonElement fluidInput = GsonHelper.isArrayNode(json, "fluidInput") ? GsonHelper.getAsJsonArray(json, "fluidInput") : GsonHelper.getAsJsonObject(json, "fluidInput");
-        FluidStackIngredient fluidIngredient = IngredientCreatorAccess.fluid().deserialize(fluidInput);
+        List<FluidStackIngredient> fluidIngredients = new ArrayList<>();
+        if (json.has("fluidInput")) {
+            JsonElement fluidInput = GsonHelper.isArrayNode(json, "fluidInput") ? GsonHelper.getAsJsonArray(json, "fluidInput") : GsonHelper.getAsJsonObject(json, "fluidInput");
+            if (fluidInput.isJsonArray() && !fluidInput.getAsJsonArray().isEmpty() ||
+                    fluidInput.isJsonObject() && fluidInput.getAsJsonObject().size() != 0) {
+                fluidIngredients.add(IngredientCreatorAccess.fluid().deserialize(fluidInput));
+            }
+        }
+
         FloatingLong energyRequired = FloatingLong.ZERO;
         if (json.has("energyRequired")) {
             energyRequired = SerializerHelper.getFloatingLong(json, "energyRequired");
@@ -63,7 +69,7 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
 
                 }
 
-                return this.factory.create(recipeId, ingredients, fluidIngredient, energyRequired, duration, itemOutput);
+                return this.factory.create(recipeId, itemIngredients, fluidIngredients, energyRequired, duration, itemOutput);
             }
         }
     }
@@ -77,12 +83,18 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
                 itemStackIngredients.add(inputSolidIngredient);
 
             }
-            FluidStackIngredient inputFluid = IngredientCreatorAccess.fluid().read(buffer);
+
+            List<FluidStackIngredient> inputFluids = new ArrayList<>();
+            int inputFluidSize = buffer.readInt();
+            for (int i = 0; i < inputFluidSize; i++) {
+                FluidStackIngredient inputFluid = IngredientCreatorAccess.fluid().read(buffer);
+                inputFluids.add(inputFluid);
+            }
 
             FloatingLong energyRequired = FloatingLong.readFromBuffer(buffer);
             int duration = buffer.readVarInt();
             ItemStack outputItem = buffer.readItem();
-            return this.factory.create(recipeId, itemStackIngredients, inputFluid, energyRequired, duration, outputItem);
+            return this.factory.create(recipeId, itemStackIngredients, inputFluids, energyRequired, duration, outputItem);
         } catch (Exception e) {
             Mekanism.logger.error("Error reading assembling recipe from packet.", e);
             throw e;
@@ -100,6 +112,6 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
 
     @FunctionalInterface
     public interface IFactory<RECIPE extends AssemblingRecipe> {
-        RECIPE create(ResourceLocation id, List<ItemStackIngredient> inputSolids, FluidStackIngredient inputFluid, FloatingLong energyRequired, int duration, ItemStack outputItem);
+        RECIPE create(ResourceLocation id, List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluids, FloatingLong energyRequired, int duration, ItemStack outputItem);
     }
 }

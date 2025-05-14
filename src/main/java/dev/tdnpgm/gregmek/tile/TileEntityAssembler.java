@@ -1,10 +1,9 @@
 package dev.tdnpgm.gregmek.tile;
 
-import dev.tdnpgm.gregmek.Gregmek;
 import dev.tdnpgm.gregmek.recipes.AssemblingCachedRecipe;
 import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
-import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
 import dev.tdnpgm.gregmek.recipes.lookup.IDoubleMultipleRecipeLookupHandler;
+import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
 import dev.tdnpgm.gregmek.registry.GregmekBlocks;
 import dev.tdnpgm.gregmek.registry.recipe.GregmekRecipeType;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
@@ -88,14 +87,14 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
 
     public TileEntityAssembler(BlockPos pos, BlockState state) {
         super(GregmekBlocks.ASSEMBLING_MACHINE, pos, state, TRACKED_ERROR_TYPES, 200);
-        this.configComponent = new TileComponentConfig(this, new TransmissionType[]{TransmissionType.ITEM, TransmissionType.FLUID, TransmissionType.ENERGY});
+        this.configComponent = new TileComponentConfig(this, TransmissionType.ITEM, TransmissionType.FLUID, TransmissionType.ENERGY);
         this.configComponent.setupItemIOConfig(
                 GregmekUtils.collectOfType(IInventorySlot.class, inputSlots),
                 Collections.singletonList(outputSlot), energySlot, false);
         this.configComponent.setupInputConfig(TransmissionType.FLUID, this.inputFluidTank);
         this.configComponent.setupInputConfig(TransmissionType.ENERGY, this.energyContainer);
         this.ejectorComponent = new TileComponentEjector(this);
-        this.ejectorComponent.setOutputData(this.configComponent, new TransmissionType[]{TransmissionType.ITEM});
+        this.ejectorComponent.setOutputData(this.configComponent, TransmissionType.ITEM);
         this.itemInputHandlers = inputSlots.stream()
                 .map(inputInventorySlot ->
                         InputHelper.getInputHandler(inputInventorySlot, RecipeError.NOT_ENOUGH_INPUT))
@@ -121,7 +120,7 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
         InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this::getDirection, this::getConfig);
         this.inputSlots = new ArrayList<>();
 
-        for (int i = 0; i < AssemblingRecipe.itemSlots; i++) {
+        for (int i = 0; i < AssemblingRecipe.MAX_ITEM_SLOTS; i++) {
             int slotXIndex = i % 3;
             int slotYIndex = i / 3;
 
@@ -156,10 +155,7 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
     }
 
     public @Nullable AssemblingRecipe getRecipe(int cacheIndex) {
-        AssemblingRecipe recipe = this.findFirstRecipeHandlers(itemInputHandlers, Collections.singletonList(fluidInputHandler));
-        Gregmek.DEBUG_LOGGER.info("getRecipe: {}",
-                recipe != null ? recipe.getId() : "NOT FOUND");
-        return recipe;
+        return this.findFirstRecipeHandlers(itemInputHandlers, Collections.singletonList(fluidInputHandler));
     }
 
     public @NotNull CachedRecipe<AssemblingRecipe> createNewCachedRecipe(@NotNull AssemblingRecipe recipe, int cacheIndex) {

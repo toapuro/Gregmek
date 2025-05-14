@@ -1,0 +1,26 @@
+{
+  "type": "gregmek:assembling",
+  "duration": 100,
+  "fluidInput": {
+    "amount": 100,
+    "tag": "minecraft:water"
+  },
+  "itemInputs": [
+    {
+      "ingredient": {
+        "item": "minecraft:iron_ingot"
+      },
+      "amount": 4
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:iron_block"
+      },
+      "amount": 2
+    }
+  ],
+  "itemOutput": {
+    "item": "minecraft:anvil"
+  },
+  "amount": 1
+}

@@ -3,7 +3,6 @@ package dev.tdnpgm.gregmek.gui;
 import dev.tdnpgm.gregmek.tile.TileEntityAssembler;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.gui.GuiConfigurableTile;
-import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.gauge.GaugeType;
 import mekanism.client.gui.element.gauge.GuiFluidGauge;
@@ -13,15 +12,10 @@ import mekanism.client.gui.element.tab.GuiEnergyTab;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.inventory.warning.WarningTracker;
-import mekanism.common.tile.machine.TileEntityChemicalWasher;
-import mekanism.common.tile.machine.TileEntityCombiner;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 public class GuiAssembler extends GuiConfigurableTile<TileEntityAssembler, MekanismTileContainer<TileEntityAssembler>> {
     public GuiAssembler(MekanismTileContainer<TileEntityAssembler> container, Inventory inv, Component title) {
@@ -40,7 +34,8 @@ public class GuiAssembler extends GuiConfigurableTile<TileEntityAssembler, Mekan
                         .jeiCategory(this.tile))
                 .warning(WarningTracker.WarningType.INPUT_DOESNT_PRODUCE_OUTPUT, this.tile.
                         getWarningCheck(CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT));
-        this.addRenderableWidget(new GuiFluidGauge(() -> this.tile.inputFluidTank, () -> this.tile.getFluidTanks(null), GaugeType.STANDARD, this, 95, 17))
+        this.addRenderableWidget(new GuiFluidGauge(() -> this.tile.inputFluidTank, () -> this.tile.getFluidTanks(null),
+                        GaugeType.STANDARD, this, 60, 17))
                 .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, this.tile
                         .getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT));
     }

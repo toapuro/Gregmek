@@ -37,8 +37,8 @@ public class GregmekRecipeType{
                         recipeType,
                         AssemblingRecipe::getInputSolids,
                         AssemblingRecipe::getInputFluids,
-                        AssemblingRecipe.itemSlots,
-                        AssemblingRecipe.fluidSlots
+                        AssemblingRecipe.MAX_ITEM_SLOTS,
+                        AssemblingRecipe.MAX_FLUID_SLOTS
                 ));
     }
 }

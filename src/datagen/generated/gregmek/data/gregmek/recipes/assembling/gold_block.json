@@ -1,0 +1,24 @@
+{
+  "type": "gregmek:assembling",
+  "duration": 100,
+  "fluidInput": {
+  },
+  "itemInputs": [
+    {
+      "ingredient": {
+        "item": "minecraft:string"
+      },
+      "amount": 2
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:stick"
+      },
+      "amount": 2
+    }
+  ],
+  "itemOutput": {
+    "item": "minecraft:bow",
+    "amount": 1
+  }
+}
