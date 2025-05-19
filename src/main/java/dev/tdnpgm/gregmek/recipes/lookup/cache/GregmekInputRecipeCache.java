@@ -1,7 +1,7 @@
 package dev.tdnpgm.gregmek.recipes.lookup.cache;
 
-import mekanism.api.recipes.MekanismRecipe;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
+import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.common.recipe.MekanismRecipeType;
@@ -29,9 +29,9 @@ public class GregmekInputRecipeCache {
             super(
                     recipeType,
                     inputsAExtractor,
-                    GregmekUtils.generateNList(ItemInputCache::new, maxSolidInputs),
+                    GregmekUtils.makeListOf(ItemInputCache::new, maxSolidInputs),
                     inputsBExtractor,
-                    GregmekUtils.generateNList(FluidInputCache::new, maxFluidSlots)
+                    GregmekUtils.makeListOf(FluidInputCache::new, maxFluidSlots)
             );
         }
     }

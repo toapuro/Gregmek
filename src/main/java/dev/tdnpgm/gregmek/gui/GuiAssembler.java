@@ -35,7 +35,7 @@ public class GuiAssembler extends GuiConfigurableTile<TileEntityAssembler, Mekan
                 .warning(WarningTracker.WarningType.INPUT_DOESNT_PRODUCE_OUTPUT, this.tile.
                         getWarningCheck(CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT));
         this.addRenderableWidget(new GuiFluidGauge(() -> this.tile.inputFluidTank, () -> this.tile.getFluidTanks(null),
-                        GaugeType.STANDARD, this, 60, 17))
+                        GaugeType.SMALL_MED, this, 70, 16))
                 .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, this.tile
                         .getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT));
     }

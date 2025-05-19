@@ -8,13 +8,12 @@ import mekanism.common.item.block.machine.ItemBlockMachine;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.resource.BlockResourceInfo;
-import mekanism.common.tile.machine.TileEntityChemicalDissolutionChamber;
 
 public class GregmekBlocks {
     public static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister(Gregmek.MODID);
     public static final BlockRegistryObject<BlockTile.BlockTileModel<TileEntityAssembler, Machine<TileEntityAssembler>>, ItemBlockMachine> ASSEMBLING_MACHINE;
 
     static {
-        ASSEMBLING_MACHINE = BLOCKS.register("assembling_machine", () -> new BlockTile.BlockTileModel<>(GregmekBlockTypes.ASSENBLING_MACHINE, (properties) -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+        ASSEMBLING_MACHINE = BLOCKS.register("assembler", () -> new BlockTile.BlockTileModel<>(GregmekBlockTypes.ASSENBLING_MACHINE, (properties) -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
     }
 }

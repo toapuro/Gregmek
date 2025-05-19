@@ -32,8 +32,8 @@ public class DoubleMultipleShapelessRecipeCache<
 
     protected DoubleMultipleShapelessRecipeCache(MekanismRecipeType<RECIPE, ?> recipeType, Function<RECIPE, List<INGREDIENT_TYPE_A>> inputsAExtractor, List<CACHE_A> cachesA, Function<RECIPE, List<INGREDIENT_TYPE_B>> inputsBExtractor, List<CACHE_B> cachesB) {
         super(recipeType);
-        this.complexIngredientsA = GregmekUtils.generateNList(HashSet::new, cachesA.size());
-        this.complexIngredientsB = GregmekUtils.generateNList(HashSet::new, cachesB.size());
+        this.complexIngredientsA = GregmekUtils.makeListOf(HashSet::new, cachesA.size());
+        this.complexIngredientsB = GregmekUtils.makeListOf(HashSet::new, cachesB.size());
         this.inputsAExtractor = inputsAExtractor;
         this.inputsBExtractor = inputsBExtractor;
 

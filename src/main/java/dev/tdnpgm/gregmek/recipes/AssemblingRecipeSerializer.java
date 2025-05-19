@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import mekanism.api.SerializerHelper;
-import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
@@ -47,11 +46,6 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
             }
         }
 
-        FloatingLong energyRequired = FloatingLong.ZERO;
-        if (json.has("energyRequired")) {
-            energyRequired = SerializerHelper.getFloatingLong(json, "energyRequired");
-        }
-
         JsonElement ticks = json.get("duration");
         if (!GsonHelper.isNumberValue(ticks)) {
             throw new JsonSyntaxException("Expected duration to be a number greater than zero.");
@@ -69,7 +63,7 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
 
                 }
 
-                return this.factory.create(recipeId, itemIngredients, fluidIngredients, energyRequired, duration, itemOutput);
+                return this.factory.create(recipeId, itemIngredients, fluidIngredients, duration, itemOutput);
             }
         }
     }
@@ -91,10 +85,9 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
                 inputFluids.add(inputFluid);
             }
 
-            FloatingLong energyRequired = FloatingLong.readFromBuffer(buffer);
             int duration = buffer.readVarInt();
             ItemStack outputItem = buffer.readItem();
-            return this.factory.create(recipeId, itemStackIngredients, inputFluids, energyRequired, duration, outputItem);
+            return this.factory.create(recipeId, itemStackIngredients, inputFluids, duration, outputItem);
         } catch (Exception e) {
             Mekanism.logger.error("Error reading assembling recipe from packet.", e);
             throw e;
@@ -112,6 +105,6 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
 
     @FunctionalInterface
     public interface IFactory<RECIPE extends AssemblingRecipe> {
-        RECIPE create(ResourceLocation id, List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluids, FloatingLong energyRequired, int duration, ItemStack outputItem);
+        RECIPE create(ResourceLocation id, List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluids, int duration, ItemStack outputItem);
     }
 }

@@ -8,6 +8,7 @@ import dev.tdnpgm.gregmek.registry.GregmekBlocks;
 import dev.tdnpgm.gregmek.registry.recipe.GregmekRecipeType;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
 import mekanism.api.IContentsListener;
+import mekanism.api.Upgrade;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -60,6 +61,8 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
     private final List<IInputHandler<@NotNull ItemStack>> itemInputHandlers;
     private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
     private MachineEnergyContainer<TileEntityAssembler> energyContainer;
+
+
     @WrappingComputerMethod(
             wrapper = SpecialComputerMethodWrapper.ComputerIInventorySlotWrapper.class,
             methodNames = {"getMainInput"},
@@ -183,6 +186,25 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
     )
     FloatingLong getEnergyUsage() {
         return this.getActive() ? this.energyContainer.getEnergyPerTick() : FloatingLong.ZERO;
+    }
+
+    @Override
+    public void onCachedRecipeChanged(@Nullable CachedRecipe<AssemblingRecipe> cachedRecipe, int cacheIndex) {
+        super.onCachedRecipeChanged(cachedRecipe, cacheIndex);
+
+        int recipeDuration;
+        if (cachedRecipe == null) {
+            recipeDuration = 100;
+        } else {
+            AssemblingRecipe recipe = cachedRecipe.getRecipe();
+            recipeDuration = recipe.getDuration();
+        }
+
+        boolean update = this.baseTicksRequired != recipeDuration;
+        this.baseTicksRequired = recipeDuration;
+        if (update) {
+            this.recalculateUpgrades(Upgrade.SPEED);
+        }
     }
 
     static {

@@ -47,7 +47,7 @@ public class AssemblerRecipeCategory extends BaseRecipeCategory<AssemblingRecipe
         this.inputFluidGauge = this.addElement(GuiFluidGauge.getDummy(GaugeType.STANDARD.with(DataType.INPUT), this, 45, 17));
         this.addSlot(SlotType.POWER, 39, 35).with(SlotOverlay.POWER);
         this.addElement(new GuiVerticalPowerBar(this, FULL_BAR, 164, 15));
-        this.addSimpleProgress(ProgressType.BAR, 100, 38);
+        this.addSimpleProgress(ProgressType.BAR, 107, 38);
     }
 
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, AssemblingRecipe recipe, @NotNull IFocusGroup focusGroup) {

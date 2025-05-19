@@ -1,19 +1,21 @@
 package dev.tdnpgm.gregmek.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GregmekUtils {
-    public static <T> List<T> generateNList(Supplier<T> supplier, int n) {
+    public static <T> List<T> makeListOf(Supplier<T> supplier, int n) {
         return IntStream.range(0, n)
                 .mapToObj(value -> supplier.get())
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static <T> List<T> generateNListWithIndex(Function<Integer, T> supplier, int n) {
+    public static <T> List<T> makeListOfWithIndex(Function<Integer, T> supplier, int n) {
         return IntStream.range(0, n)
                 .mapToObj(supplier::apply)
                 .collect(Collectors.toCollection(ArrayList::new));

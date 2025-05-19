@@ -1,6 +1,5 @@
 package dev.tdnpgm.gregmek.recipes;
 
-import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -12,26 +11,23 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiPredicate;
 
 public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredicate<List<ItemStack>, List<FluidStack>> {
     private final List<ItemStackIngredient> inputSolids;
     private final List<FluidStackIngredient> inputFluids;
-    private final FloatingLong energyRequired;
     private final int duration;
     private final ItemStack outputItem;
 
     public static int MAX_ITEM_SLOTS = 9;
     public static int MAX_FLUID_SLOTS = 1;
 
-    public AssemblingRecipe(ResourceLocation id, List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluids, FloatingLong energyRequired, int duration, ItemStack outputItem) {
+    public AssemblingRecipe(ResourceLocation id, List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluids, int duration, ItemStack outputItem) {
         super(id);
 
         Objects.requireNonNull(inputSolids, "Item input cannot be null.");
         this.inputSolids = inputSolids;
         this.inputFluids = Objects.requireNonNull(inputFluids, "Fluid input cannot be null.");
-        this.energyRequired = Objects.requireNonNull(energyRequired, "Required energy cannot be null.").copyAsConst();
         if (duration <= 0) {
             throw new IllegalArgumentException("Duration must be positive.");
         } else {
@@ -58,10 +54,6 @@ public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredi
         return this.inputFluids;
     }
 
-    public FloatingLong getEnergyRequired() {
-        return this.energyRequired;
-    }
-
     public int getDuration() {
         return this.duration;
     }
@@ -73,15 +65,13 @@ public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredi
             }
         }
 
-        Optional<FluidStackIngredient> firstFluidIngredient = inputFluids.stream().findFirst();
-
-        if (firstFluidIngredient.isEmpty()) {
-            return true;
-        } else {
-            Optional<FluidStack> firstLiquid = liquid.stream().findFirst();
-            FluidStack fluidStack = firstLiquid.orElse(FluidStack.EMPTY);
-            return firstFluidIngredient.get().test(fluidStack);
+        for (FluidStackIngredient inputFluid : inputFluids) {
+            if (liquid.stream().noneMatch(inputFluid)) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     public ItemStack getOutputDefinition() {
@@ -107,10 +97,11 @@ public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredi
             inputSolid.write(buffer);
         }
 
-        Optional<FluidStackIngredient> first = this.inputFluids.stream().findFirst();
-        buffer.writeInt(first.isPresent() ? 1 : 0);
-        first.ifPresent(fluidStackIngredient -> fluidStackIngredient.write(buffer));
-        this.energyRequired.writeToBuffer(buffer);
+        buffer.writeInt(inputFluids.size());
+        for (FluidStackIngredient inputFluid : inputFluids) {
+            inputFluid.write(buffer);
+        }
+
         buffer.writeVarInt(this.duration);
         buffer.writeItem(this.outputItem);
     }

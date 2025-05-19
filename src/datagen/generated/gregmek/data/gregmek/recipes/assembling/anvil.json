@@ -2,8 +2,6 @@
   "type": "gregmek:assembling",
   "duration": 100,
   "fluidInput": {
-    "amount": 100,
-    "tag": "minecraft:water"
   },
   "itemInputs": [
     {
@@ -16,7 +14,7 @@
       "ingredient": {
         "item": "minecraft:iron_block"
       },
-      "amount": 2
+      "amount": 3
     }
   ],
   "itemOutput": {

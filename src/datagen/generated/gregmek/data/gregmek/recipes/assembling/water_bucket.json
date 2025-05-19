@@ -1,0 +1,20 @@
+{
+  "type": "gregmek:assembling",
+  "duration": 100,
+  "fluidInput": {
+    "amount": 1000,
+    "tag": "minecraft:water"
+  },
+  "itemInputs": [
+    {
+      "ingredient": {
+        "item": "minecraft:bucket"
+      },
+      "amount": 1
+    }
+  ],
+  "itemOutput": {
+    "item": "minecraft:water_bucket"
+  },
+  "amount": 1
+}

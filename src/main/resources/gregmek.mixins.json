@@ -5,7 +5,12 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "gregmek.refmap.json",
   "mixins": [
+    "ClientboundUpdateRecipesPacketMixin",
+    "MachineEnergyContainerMixin",
     "MekanismJEIMixin",
+    "MekanismRecipeMixin",
+    "RecipeManagerMixin",
+    "TileEntityRecipeMachineMixin",
     "accessor.MekanismRecipeTypeAccessor"
   ],
   "client": [

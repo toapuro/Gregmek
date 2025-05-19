@@ -1,7 +1,10 @@
 package dev.tdnpgm.gregmek;
 
 import com.mojang.logging.LogUtils;
-import dev.tdnpgm.gregmek.registry.*;
+import dev.tdnpgm.gregmek.registry.GregmekBlocks;
+import dev.tdnpgm.gregmek.registry.GregmekContainerTypes;
+import dev.tdnpgm.gregmek.registry.GregmekRecipeSerializers;
+import dev.tdnpgm.gregmek.registry.GregmekTileEntityTypes;
 import dev.tdnpgm.gregmek.registry.recipe.GregmekRecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +33,7 @@ public class Gregmek {
         GregmekTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         GregmekRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         GregmekContainerTypes.CONTAINER_TYPES.register(modEventBus);
+
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

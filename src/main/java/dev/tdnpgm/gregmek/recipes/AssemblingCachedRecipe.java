@@ -19,15 +19,15 @@ public class AssemblingCachedRecipe extends CachedRecipe<AssemblingRecipe> {
     private final List<IInputHandler<@NotNull ItemStack>> itemInputHandlers;
     private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
     private final List<ItemStack> recipeItems;
-    private final List<FluidStack> recipeFluids;
+    private FluidStack recipeFluid;
 
     @Nullable
     private ItemStack output;
 
     public AssemblingCachedRecipe(AssemblingRecipe recipe, BooleanSupplier recheckAllErrors, List<IInputHandler<@NotNull ItemStack>> itemInputHandlers, IInputHandler<@NotNull FluidStack> fluidInputHandler, IOutputHandler<@NotNull ItemStack> outputHandler) {
         super(recipe, recheckAllErrors);
-        this.recipeItems = GregmekUtils.generateNList(() -> ItemStack.EMPTY, AssemblingRecipe.MAX_ITEM_SLOTS);
-        this.recipeFluids = GregmekUtils.generateNList(() -> FluidStack.EMPTY, AssemblingRecipe.MAX_FLUID_SLOTS);
+        this.recipeItems = GregmekUtils.makeListOf(() -> ItemStack.EMPTY, AssemblingRecipe.MAX_ITEM_SLOTS);
+        this.recipeFluid = FluidStack.EMPTY;
         this.itemInputHandlers = Objects.requireNonNull(itemInputHandlers, "Item input handler cannot be null.");
         this.fluidInputHandler = Objects.requireNonNull(fluidInputHandler, "Fluid input handler cannot be null.");
         this.outputHandler = Objects.requireNonNull(outputHandler, "Output handler cannot be null.");
@@ -36,30 +36,36 @@ public class AssemblingCachedRecipe extends CachedRecipe<AssemblingRecipe> {
     protected void calculateOperationsThisTick(CachedRecipe.@NotNull OperationTracker tracker) {
         super.calculateOperationsThisTick(tracker);
         if (tracker.shouldContinueChecking()) {
-            ArrayList<ItemStackIngredient> itemSolidsQueue = new ArrayList<>(this.recipe.getInputSolids());
+            ArrayList<ItemStackIngredient> itemSolidsRemain = new ArrayList<>(this.recipe.getInputSolids());
 
+            this.recipeItems.replaceAll(itemStack -> ItemStack.EMPTY);
             for (int i = 0; i < this.itemInputHandlers.size(); i++) {
                 IInputHandler<@NotNull ItemStack> itemInputHandler = this.itemInputHandlers.get(i);
-                this.recipeItems.set(i, ItemStack.EMPTY);
-                Iterator<ItemStackIngredient> queueIterator = itemSolidsQueue.iterator();
+                Iterator<ItemStackIngredient> queueIterator = itemSolidsRemain.iterator();
                 while (queueIterator.hasNext()) {
                     ItemStackIngredient itemSolid = queueIterator.next();
                     ItemStack recipeInput = itemInputHandler.getRecipeInput(itemSolid);
                     if (!recipeInput.isEmpty()) {
                         this.recipeItems.set(i, recipeInput);
                         queueIterator.remove();
+                        break;
                     }
                 }
             }
 
             List<FluidStackIngredient> inputFluids = this.recipe.getInputFluids();
-
-            this.recipeFluids.replaceAll(fluidStack -> FluidStack.EMPTY);
-            for (int i = 0; i < inputFluids.size(); i++) {
-                this.recipeFluids.set(i, fluidInputHandler.getRecipeInput(inputFluids.get(i)));
+            boolean isRecipeFluidSatisfied = true;
+            this.recipeFluid = FluidStack.EMPTY;
+            for (FluidStackIngredient inputFluid : inputFluids) {
+                FluidStack recipeInput = this.fluidInputHandler.getRecipeInput(inputFluid);
+                if (recipeInput.isEmpty()) {
+                    isRecipeFluidSatisfied = false;
+                    break;
+                }
+                this.recipeFluid = recipeInput;
             }
 
-            if (!itemSolidsQueue.isEmpty()) {
+            if (!itemSolidsRemain.isEmpty() || !isRecipeFluidSatisfied) {
                 tracker.mismatchedRecipe();
             } else {
 //                for (int i = 0; i < itemInputHandlers.size(); i++) {
@@ -74,19 +80,14 @@ public class AssemblingCachedRecipe extends CachedRecipe<AssemblingRecipe> {
         }
     }
 
-    public boolean isInputValid(IInputHandler<@NotNull ItemStack> itemInputHandler) {
-        ItemStack item = itemInputHandler.getInput();
-
-        if (item.isEmpty()) {
-            return true;
-        } else {
-            FluidStack fluid = this.fluidInputHandler.getInput();
-            return this.recipe.test(itemInputHandlers.stream().map(IInputHandler::getInput).toList(), Collections.singletonList(fluid));
-        }
-    }
-
     public boolean isInputValid() {
-        return itemInputHandlers.stream().allMatch(this::isInputValid);
+        List<ItemStack> itemStacks = this.itemInputHandlers.stream().map(IInputHandler::getInput).toList();
+        FluidStack fluidStack = this.fluidInputHandler.getInput();
+        if (itemStacks.isEmpty()) {
+            return false;
+        }
+
+        return this.recipe.test(itemStacks, Collections.singletonList(fluidStack));
     }
 
     protected void finishProcessing(int operations) {
@@ -101,9 +102,7 @@ public class AssemblingCachedRecipe extends CachedRecipe<AssemblingRecipe> {
             itemInputHandler.use(recipeItem, operations);
         }
 
-        for (FluidStack recipeFluid : this.recipeFluids) {
-            this.fluidInputHandler.use(recipeFluid, operations);
-        }
+        this.fluidInputHandler.use(recipeFluid, operations);
         this.outputHandler.handleOutput(this.output, operations);
     }
 }
