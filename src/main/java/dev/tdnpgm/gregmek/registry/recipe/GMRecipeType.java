@@ -2,19 +2,22 @@ package dev.tdnpgm.gregmek.registry.recipe;
 
 import dev.tdnpgm.gregmek.Gregmek;
 import dev.tdnpgm.gregmek.mixin.accessor.MekanismRecipeTypeAccessor;
+import dev.tdnpgm.gregmek.recipes.AlloySmelterRecipe;
 import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
 import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.cache.IInputRecipeCache;
+import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.registration.impl.RecipeTypeDeferredRegister;
 import mekanism.common.registration.impl.RecipeTypeRegistryObject;
 
 import java.util.function.Function;
 
-public class GregmekRecipeType{
+public class GMRecipeType {
     public static final RecipeTypeDeferredRegister RECIPE_TYPES = new RecipeTypeDeferredRegister(Gregmek.MODID);
     public static final RecipeTypeRegistryObject<AssemblingRecipe, GregmekInputRecipeCache.ItemsFluids<AssemblingRecipe>> ASSEMBLING;
+    public static final RecipeTypeRegistryObject<AlloySmelterRecipe, InputRecipeCache.DoubleItem<AlloySmelterRecipe>> ALLOY_SMELTER;
 
     public static <RECIPE extends MekanismRecipe, INPUT_CACHE extends IInputRecipeCache> MekanismRecipeType<RECIPE, INPUT_CACHE> make(String name, Function<MekanismRecipeType<RECIPE, INPUT_CACHE>, INPUT_CACHE> inputCacheCreator) {
         MekanismRecipeType<RECIPE, INPUT_CACHE> recipeType =
@@ -39,6 +42,12 @@ public class GregmekRecipeType{
                         AssemblingRecipe::getInputFluids,
                         AssemblingRecipe.MAX_ITEM_SLOTS,
                         AssemblingRecipe.MAX_FLUID_SLOTS
+                ));
+        ALLOY_SMELTER = register("alloy_smelter", (recipeType) ->
+                new InputRecipeCache.DoubleItem<>(
+                        recipeType,
+                        AlloySmelterRecipe::getMainInput,
+                        AlloySmelterRecipe::getSecondaryInput
                 ));
     }
 }

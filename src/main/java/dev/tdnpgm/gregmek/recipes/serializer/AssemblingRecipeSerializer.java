@@ -1,4 +1,4 @@
-package dev.tdnpgm.gregmek.recipes;//
+package dev.tdnpgm.gregmek.recipes.serializer;//
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by FernFlower decompiler)
 //
@@ -6,6 +6,7 @@ package dev.tdnpgm.gregmek.recipes;//
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
 import mekanism.api.SerializerHelper;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;

@@ -5,15 +5,15 @@ import dev.tdnpgm.gregmek.lang.GregmekLang;
 import mekanism.common.registration.impl.CreativeTabDeferredRegister;
 import mekanism.common.registration.impl.CreativeTabRegistryObject;
 
-public class GregmekCreativeTabs {
+public class GMCreativeTabs {
     public static final CreativeTabDeferredRegister CREATIVE_TABS = new CreativeTabDeferredRegister(Gregmek.MODID);
     public static final CreativeTabRegistryObject GREGMEK;
 
 
     static {
-        GREGMEK = CREATIVE_TABS.registerMain(GregmekLang.GREGMEK, GregmekBlocks.ASSEMBLING_MACHINE,
+        GREGMEK = CREATIVE_TABS.registerMain(GregmekLang.GREGMEK, GMBlocks.ASSEMBLING_MACHINE,
                 (builder) -> builder.withSearchBar().displayItems((displayParameters, output) -> {
-                    CreativeTabDeferredRegister.addToDisplay(GregmekBlocks.BLOCKS, output);
+                    CreativeTabDeferredRegister.addToDisplay(GMBlocks.BLOCKS, output);
                 }));
     }
 }

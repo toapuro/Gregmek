@@ -1,6 +1,6 @@
 package dev.tdnpgm.gregmek.mixin;
 
-import dev.tdnpgm.gregmek.recipes.IHasEnergyRequired;
+import dev.tdnpgm.gregmek.recipes.additional.IHasEnergyRequired;
 import mekanism.api.energy.IEnergyContainer;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.providers.IBlockProvider;

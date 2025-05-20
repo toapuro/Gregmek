@@ -3,7 +3,7 @@ package dev.tdnpgm.gregmek.mixin;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.tdnpgm.gregmek.recipes.IHasEnergyRequired;
+import dev.tdnpgm.gregmek.recipes.additional.IHasEnergyRequired;
 import mekanism.api.SerializerHelper;
 import mekanism.api.math.FloatingLong;
 import net.minecraft.world.item.crafting.Recipe;

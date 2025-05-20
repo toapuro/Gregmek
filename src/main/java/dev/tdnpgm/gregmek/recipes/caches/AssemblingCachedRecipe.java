@@ -1,5 +1,6 @@
-package dev.tdnpgm.gregmek.recipes;
+package dev.tdnpgm.gregmek.recipes.caches;
 
+import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;

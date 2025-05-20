@@ -2,7 +2,7 @@ package dev.tdnpgm.gregmek.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.tdnpgm.gregmek.recipes.IHasEnergyRequired;
+import dev.tdnpgm.gregmek.recipes.additional.IHasEnergyRequired;
 import mekanism.api.math.FloatingLong;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;

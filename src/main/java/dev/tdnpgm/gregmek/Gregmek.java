@@ -1,11 +1,8 @@
 package dev.tdnpgm.gregmek;
 
 import com.mojang.logging.LogUtils;
-import dev.tdnpgm.gregmek.registry.GregmekBlocks;
-import dev.tdnpgm.gregmek.registry.GregmekContainerTypes;
-import dev.tdnpgm.gregmek.registry.GregmekRecipeSerializers;
-import dev.tdnpgm.gregmek.registry.GregmekTileEntityTypes;
-import dev.tdnpgm.gregmek.registry.recipe.GregmekRecipeType;
+import dev.tdnpgm.gregmek.registry.*;
+import dev.tdnpgm.gregmek.registry.recipe.GMRecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -28,11 +25,12 @@ public class Gregmek {
         MinecraftForge.EVENT_BUS.register(this);
 
         Config.registerConfig();
-        GregmekRecipeType.RECIPE_TYPES.register(modEventBus);
-        GregmekBlocks.BLOCKS.register(modEventBus);
+        GMRecipeType.RECIPE_TYPES.register(modEventBus);
+        GMBlocks.BLOCKS.register(modEventBus);
         GregmekTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
-        GregmekRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-        GregmekContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        GMRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        GMContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        GMCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);

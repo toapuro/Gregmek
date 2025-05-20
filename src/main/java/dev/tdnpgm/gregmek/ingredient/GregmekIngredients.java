@@ -1,4 +1,4 @@
-package dev.tdnpgm.gregmek.recipes.ingredient;
+package dev.tdnpgm.gregmek.ingredient;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

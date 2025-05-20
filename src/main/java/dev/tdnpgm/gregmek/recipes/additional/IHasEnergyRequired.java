@@ -1,4 +1,4 @@
-package dev.tdnpgm.gregmek.recipes;
+package dev.tdnpgm.gregmek.recipes.additional;
 
 import mekanism.api.math.FloatingLong;
 

@@ -1,11 +1,11 @@
 package dev.tdnpgm.gregmek.tile;
 
-import dev.tdnpgm.gregmek.recipes.AssemblingCachedRecipe;
 import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
+import dev.tdnpgm.gregmek.recipes.caches.AssemblingCachedRecipe;
 import dev.tdnpgm.gregmek.recipes.lookup.IDoubleMultipleRecipeLookupHandler;
 import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
-import dev.tdnpgm.gregmek.registry.GregmekBlocks;
-import dev.tdnpgm.gregmek.registry.recipe.GregmekRecipeType;
+import dev.tdnpgm.gregmek.registry.GMBlocks;
+import dev.tdnpgm.gregmek.registry.recipe.GMRecipeType;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
@@ -65,8 +65,8 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
 
     @WrappingComputerMethod(
             wrapper = SpecialComputerMethodWrapper.ComputerIInventorySlotWrapper.class,
-            methodNames = {"getMainInput"},
-            docPlaceholder = "main input slot"
+            methodNames = {"getInputs"},
+            docPlaceholder = "input slots"
     )
     List<InputInventorySlot> inputSlots;
     @WrappingComputerMethod(
@@ -89,7 +89,7 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
     EnergyInventorySlot energySlot;
 
     public TileEntityAssembler(BlockPos pos, BlockState state) {
-        super(GregmekBlocks.ASSEMBLING_MACHINE, pos, state, TRACKED_ERROR_TYPES, 200);
+        super(GMBlocks.ASSEMBLING_MACHINE, pos, state, TRACKED_ERROR_TYPES, 200);
         this.configComponent = new TileComponentConfig(this, TransmissionType.ITEM, TransmissionType.FLUID, TransmissionType.ENERGY);
         this.configComponent.setupItemIOConfig(
                 GregmekUtils.collectOfType(IInventorySlot.class, inputSlots),
@@ -154,7 +154,7 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
     }
 
     public @NotNull IMekanismRecipeTypeProvider<AssemblingRecipe, GregmekInputRecipeCache.ItemsFluids<AssemblingRecipe>> getRecipeType() {
-        return GregmekRecipeType.ASSEMBLING;
+        return GMRecipeType.ASSEMBLING;
     }
 
     public @Nullable AssemblingRecipe getRecipe(int cacheIndex) {

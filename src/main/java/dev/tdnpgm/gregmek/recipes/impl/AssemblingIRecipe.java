@@ -1,9 +1,9 @@
 package dev.tdnpgm.gregmek.recipes.impl;
 
 import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
-import dev.tdnpgm.gregmek.registry.GregmekBlocks;
-import dev.tdnpgm.gregmek.registry.GregmekRecipeSerializers;
-import dev.tdnpgm.gregmek.registry.recipe.GregmekRecipeType;
+import dev.tdnpgm.gregmek.registry.GMBlocks;
+import dev.tdnpgm.gregmek.registry.GMRecipeSerializers;
+import dev.tdnpgm.gregmek.registry.recipe.GMRecipeType;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
@@ -20,18 +20,18 @@ public class AssemblingIRecipe extends AssemblingRecipe {
     }
 
     public @NotNull RecipeType<AssemblingRecipe> getType() {
-        return GregmekRecipeType.ASSEMBLING.get();
+        return GMRecipeType.ASSEMBLING.get();
     }
 
     public @NotNull RecipeSerializer<AssemblingRecipe> getSerializer() {
-        return GregmekRecipeSerializers.ASSEMBLING.get();
+        return GMRecipeSerializers.ASSEMBLING.get();
     }
 
     public @NotNull String getGroup() {
-        return GregmekBlocks.ASSEMBLING_MACHINE.getName();
+        return GMBlocks.ASSEMBLING_MACHINE.getName();
     }
 
     public @NotNull ItemStack getToastSymbol() {
-        return GregmekBlocks.ASSEMBLING_MACHINE.getItemStack();
+        return GMBlocks.ASSEMBLING_MACHINE.getItemStack();
     }
 }

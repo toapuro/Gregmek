@@ -1,7 +1,7 @@
 package dev.tdnpgm.gregmek.recipes.jei;
 
 import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
-import dev.tdnpgm.gregmek.registry.GregmekBlocks;
+import dev.tdnpgm.gregmek.registry.GMBlocks;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.client.gui.element.GuiUpArrow;
@@ -32,7 +32,7 @@ public class AssemblerRecipeCategory extends BaseRecipeCategory<AssemblingRecipe
     private final GuiSlot output;
 
     public AssemblerRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<AssemblingRecipe> recipeType) {
-        super(helper, recipeType, GregmekBlocks.ASSEMBLING_MACHINE, 28, 16, 144, 54);
+        super(helper, recipeType, GMBlocks.ASSEMBLING_MACHINE, 28, 16, 144, 54);
         this.addElement(new GuiUpArrow(this, 68, 38));
 
         this.inputSlots = new ArrayList<>();
