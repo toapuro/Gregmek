@@ -46,12 +46,6 @@ public abstract class BendingRecipe extends MekanismRecipe implements Predicate<
         return this.inputSolids;
     }
 
-    public List<InputIngredient<ItemStack>> getInputsIngredient() {
-        return this.inputSolids.stream()
-                .map(ingredient -> (InputIngredient<ItemStack>) ingredient)
-                .toList();
-    }
-
     public int getDuration() {
         return this.duration;
     }

@@ -5,7 +5,8 @@ import mekanism.api.text.ILangEntry;
 import net.minecraft.Util;
 
 public enum GregmekLang implements ILangEntry {
-    GREGMEK("general", "gregmek");
+    GREGMEK("general", "gregmek"),
+    GREGMEK_DESCRIPTION("general", "description");
 
     private final String key;
 

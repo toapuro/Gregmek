@@ -1,6 +1,7 @@
 package dev.tdnpgm.gregmek.recipes.jei;
 
 import dev.tdnpgm.gregmek.recipes.BendingRecipe;
+import dev.tdnpgm.gregmek.registry.GMBlocks;
 import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.progress.ProgressType;
@@ -24,7 +25,7 @@ public class BenderRecipeCategory extends BaseRecipeCategory<BendingRecipe> {
     private final GuiSlot output;
 
     public BenderRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<BendingRecipe> recipeType) {
-        super(helper, recipeType, MekanismBlocks.COMBINER, 28, 16, 144, 54);
+        super(helper, recipeType, GMBlocks.BENDER, 28, 16, 144, 54);
         this.addElement(new GuiUpArrow(this, 68, 38));
         this.mainSlot = this.addSlot(SlotType.INPUT, 64, 17);
         this.extraSlot = this.addSlot(SlotType.EXTRA, 64, 53);

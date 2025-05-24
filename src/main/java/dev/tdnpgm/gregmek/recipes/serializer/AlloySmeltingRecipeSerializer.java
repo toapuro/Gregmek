@@ -40,7 +40,7 @@ public class AlloySmeltingRecipeSerializer<RECIPE extends AlloySmeltingRecipe> i
 
         ItemStack output = SerializerHelper.getItemStack(json, "itemOutput");
         if (output.isEmpty()) {
-            throw new JsonSyntaxException("Combiner recipe output must not be empty.");
+            throw new JsonSyntaxException("Alloy smelter recipe output must not be empty.");
         } else {
             return this.factory.create(recipeId, mainIngredient, secondaryIngredient, duration, output);
         }
@@ -55,7 +55,7 @@ public class AlloySmeltingRecipeSerializer<RECIPE extends AlloySmeltingRecipe> i
             ItemStack output = buffer.readItem();
             return this.factory.create(recipeId, mainIngredient, secondaryIngredient, duration, output);
         } catch (Exception e) {
-            Mekanism.logger.error("Error reading combiner recipe from packet.", e);
+            Mekanism.logger.error("Error reading alloy smelter recipe from packet.", e);
             throw e;
         }
     }
@@ -64,7 +64,7 @@ public class AlloySmeltingRecipeSerializer<RECIPE extends AlloySmeltingRecipe> i
         try {
             recipe.write(buffer);
         } catch (Exception e) {
-            Mekanism.logger.error("Error writing combiner recipe to packet.", e);
+            Mekanism.logger.error("Error writing alloy smelter recipe to packet.", e);
             throw e;
         }
     }
