@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class GregmekInputRecipeCache {
     public static class ItemFluid<
@@ -32,6 +33,17 @@ public class GregmekInputRecipeCache {
                     GregmekUtils.makeListOf(ItemInputCache::new, maxSolidInputs),
                     inputsBExtractor,
                     GregmekUtils.makeListOf(FluidInputCache::new, maxFluidSlots)
+            );
+        }
+    }
+
+    public static class Items<
+            RECIPE extends MekanismRecipe & Predicate<List<ItemStack>>> extends SingleMultipleShapelessRecipeCache<ItemStack, ItemStackIngredient, RECIPE, ItemInputCache<RECIPE>> {
+        public Items(MekanismRecipeType<RECIPE, ?> recipeType, Function<RECIPE, List<ItemStackIngredient>> inputsAExtractor, int maxSolidInputs) {
+            super(
+                    recipeType,
+                    inputsAExtractor,
+                    GregmekUtils.makeListOf(ItemInputCache::new, maxSolidInputs)
             );
         }
     }

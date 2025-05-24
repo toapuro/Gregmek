@@ -1,13 +1,13 @@
 package dev.tdnpgm.gregmek.tile;
 
-import dev.tdnpgm.gregmek.recipes.AlloySmeltingRecipe;
+import dev.tdnpgm.gregmek.recipes.BendingRecipe;
 import dev.tdnpgm.gregmek.recipes.caches.SingleShapelessInputsCachedRecipe;
 import dev.tdnpgm.gregmek.recipes.lookup.ISingleMultipleRecipeLookupHandler;
 import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
 import dev.tdnpgm.gregmek.registry.GMBlocks;
 import dev.tdnpgm.gregmek.registry.recipe.GMRecipeType;
 import mekanism.api.IContentsListener;
-import mekanism.api.math.FloatingLong;
+import mekanism.api.Upgrade;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
@@ -19,7 +19,6 @@ import mekanism.common.capabilities.holder.energy.IEnergyContainerHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.integration.computer.SpecialComputerMethodWrapper;
-import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.InputInventorySlot;
@@ -42,7 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class TileEntityAlloySmelter extends TileEntityProgressMachine<AlloySmeltingRecipe> implements ISingleMultipleRecipeLookupHandler.ItemsMultipleRecipeLookupHandler<AlloySmeltingRecipe> {
+public class TileEntityBender extends TileEntityProgressMachine<BendingRecipe> implements ISingleMultipleRecipeLookupHandler.ItemsMultipleRecipeLookupHandler<BendingRecipe> {
     private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES;
 
     static {
@@ -76,10 +75,10 @@ public class TileEntityAlloySmelter extends TileEntityProgressMachine<AlloySmelt
             docPlaceholder = "energy slot"
     )
     EnergyInventorySlot energySlot;
-    private MachineEnergyContainer<TileEntityAlloySmelter> energyContainer;
+    private MachineEnergyContainer<TileEntityBender> energyContainer;
 
-    public TileEntityAlloySmelter(BlockPos pos, BlockState state) {
-        super(GMBlocks.ALLOY_SMELTER, pos, state, TRACKED_ERROR_TYPES, 200);
+    public TileEntityBender(BlockPos pos, BlockState state) {
+        super(GMBlocks.BENDER, pos, state, TRACKED_ERROR_TYPES, 200);
         this.configComponent = new TileComponentConfig(this, TransmissionType.ITEM, TransmissionType.ENERGY);
         this.configComponent.setupItemIOConfig(List.of(this.mainInputSlot, this.secondaryInputSlot), Collections.singletonList(this.outputSlot), energySlot, false);
         this.configComponent.setupInputConfig(TransmissionType.ENERGY, this.energyContainer);
@@ -117,18 +116,18 @@ public class TileEntityAlloySmelter extends TileEntityProgressMachine<AlloySmelt
         this.recipeCacheLookupMonitor.updateAndProcess();
     }
 
-    public @NotNull IMekanismRecipeTypeProvider<AlloySmeltingRecipe, GregmekInputRecipeCache.Items<AlloySmeltingRecipe>> getRecipeType() {
-        return GMRecipeType.ALLOY_SMELTING;
+    public @NotNull IMekanismRecipeTypeProvider<BendingRecipe, GregmekInputRecipeCache.Items<BendingRecipe>> getRecipeType() {
+        return GMRecipeType.BENDING;
     }
 
-    public @Nullable AlloySmeltingRecipe getRecipe(int cacheIndex) {
+    public @Nullable BendingRecipe getRecipe(int cacheIndex) {
         return this.findFirstRecipeHandlers(List.of(this.inputHandler, this.secondaryInputHandler));
     }
 
-    public @NotNull CachedRecipe<AlloySmeltingRecipe> createNewCachedRecipe(@NotNull AlloySmeltingRecipe recipe, int cacheIndex) {
-        CachedRecipe<AlloySmeltingRecipe> cachedRecipe =
-                SingleShapelessInputsCachedRecipe.alloySmelter(recipe, this.recheckAllRecipeErrors, this.inputHandler, this.secondaryInputHandler, this.outputHandler).setErrorsChanged((x$0) -> this.onErrorsChanged(x$0)).setCanHolderFunction(() -> MekanismUtils.canFunction(this)).setActive(this::setActive);
-        MachineEnergyContainer<TileEntityAlloySmelter> energyContainer = this.energyContainer;
+    public @NotNull CachedRecipe<BendingRecipe> createNewCachedRecipe(@NotNull BendingRecipe recipe, int cacheIndex) {
+        CachedRecipe<BendingRecipe> cachedRecipe =
+                SingleShapelessInputsCachedRecipe.bender(recipe, this.recheckAllRecipeErrors, this.inputHandler, this.secondaryInputHandler, this.outputHandler).setErrorsChanged((x$0) -> this.onErrorsChanged(x$0)).setCanHolderFunction(() -> MekanismUtils.canFunction(this)).setActive(this::setActive);
+        MachineEnergyContainer<TileEntityBender> energyContainer = this.energyContainer;
         Objects.requireNonNull(energyContainer);
         return cachedRecipe.setEnergyRequirements(energyContainer::getEnergyPerTick, this.energyContainer)
                 .setRequiredTicks(this::getTicksRequired)
@@ -136,7 +135,7 @@ public class TileEntityAlloySmelter extends TileEntityProgressMachine<AlloySmelt
                 .setOperatingTicksChanged(this::setOperatingTicks);
     }
 
-    public MachineEnergyContainer<TileEntityAlloySmelter> getEnergyContainer() {
+    public MachineEnergyContainer<TileEntityBender> getEnergyContainer() {
         return this.energyContainer;
     }
 
@@ -144,10 +143,22 @@ public class TileEntityAlloySmelter extends TileEntityProgressMachine<AlloySmelt
         return super.isConfigurationDataCompatible(tileType) || MekanismUtils.isSameTypeFactory(this.getBlockType(), tileType);
     }
 
-    @ComputerMethod(
-            methodDescription = "Get the energy used in the last tick by the machine"
-    )
-    FloatingLong getEnergyUsage() {
-        return this.getActive() ? this.energyContainer.getEnergyPerTick() : FloatingLong.ZERO;
+    @Override
+    public void onCachedRecipeChanged(@Nullable CachedRecipe<BendingRecipe> cachedRecipe, int cacheIndex) {
+        super.onCachedRecipeChanged(cachedRecipe, cacheIndex);
+
+        int recipeDuration;
+        if (cachedRecipe == null) {
+            recipeDuration = 100;
+        } else {
+            BendingRecipe recipe = cachedRecipe.getRecipe();
+            recipeDuration = recipe.getDuration();
+        }
+
+        boolean update = this.baseTicksRequired != recipeDuration;
+        this.baseTicksRequired = recipeDuration;
+        if (update) {
+            this.recalculateUpgrades(Upgrade.SPEED);
+        }
     }
 }

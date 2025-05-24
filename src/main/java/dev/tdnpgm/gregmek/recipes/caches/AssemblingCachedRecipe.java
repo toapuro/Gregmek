@@ -69,12 +69,6 @@ public class AssemblingCachedRecipe extends CachedRecipe<AssemblingRecipe> {
             if (!itemSolidsRemain.isEmpty() || !isRecipeFluidSatisfied) {
                 tracker.mismatchedRecipe();
             } else {
-//                for (int i = 0; i < itemInputHandlers.size(); i++) {
-//                    IInputHandler<@NotNull ItemStack> itemInputHandler = itemInputHandlers.get(i);
-//                    ItemStack itemStack = recipeItems.get(i);
-//                    itemInputHandler.calculateOperationsCanSupport(tracker, itemStack);
-//                }
-
                 this.output = this.recipe.getOutput();
                 this.outputHandler.calculateOperationsCanSupport(tracker, this.output);
             }

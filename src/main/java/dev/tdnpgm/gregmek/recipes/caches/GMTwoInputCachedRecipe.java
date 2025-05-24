@@ -1,6 +1,5 @@
 package dev.tdnpgm.gregmek.recipes.caches;
 
-import dev.tdnpgm.gregmek.recipes.AlloySmelterRecipe;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -8,14 +7,13 @@ import mekanism.api.recipes.cache.CachedRecipeHelper;
 import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.outputs.IOutputHandler;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.*;
 
 // https://github.com/mekanism/Mekanism/blob/1.20.x/src/api/java/mekanism/api/recipes/cache/TwoInputCachedRecipe.java
+// TODO:廃止
 
 @NothingNullByDefault
 public class GMTwoInputCachedRecipe<INPUT_A, INPUT_B, OUTPUT, RECIPE extends MekanismRecipe & BiPredicate<INPUT_A, INPUT_B>> extends CachedRecipe<RECIPE> {
@@ -65,23 +63,6 @@ public class GMTwoInputCachedRecipe<INPUT_A, INPUT_B, OUTPUT, RECIPE extends Mek
         this.inputEmptyCheck = Objects.requireNonNull(inputEmptyCheck, "Input empty check cannot be null.");
         this.secondaryInputEmptyCheck = Objects.requireNonNull(secondaryInputEmptyCheck, "Secondary input empty check cannot be null.");
         this.outputEmptyCheck = Objects.requireNonNull(outputEmptyCheck, "Output empty check cannot be null.");
-    }
-
-    /**
-     * Base implementation for handling Combiner Recipes.
-     *
-     * @param recipe                Recipe.
-     * @param recheckAllErrors      Returns {@code true} if processing should be continued even if an error is hit in order to gather all the errors. It is recommended to not
-     *                              do this every tick or if there is no one viewing recipes.
-     * @param inputHandler          Main input handler.
-     * @param secondaryInputHandler Secondary/Extra input handler.
-     * @param outputHandler         Output handler.
-     */
-    public static GMTwoInputCachedRecipe<@NotNull ItemStack, @NotNull ItemStack, @NotNull ItemStack, AlloySmelterRecipe> alloySmelter(AlloySmelterRecipe recipe,
-                                                                                                                                      BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> inputHandler, IInputHandler<@NotNull ItemStack> secondaryInputHandler,
-                                                                                                                                      IOutputHandler<@NotNull ItemStack> outputHandler) {
-        return new GMTwoInputCachedRecipe<>(recipe, recheckAllErrors, inputHandler, secondaryInputHandler, outputHandler, recipe::getMainInput, recipe::getSecondaryInput,
-                recipe::getOutput, ItemStack::isEmpty, ItemStack::isEmpty, ItemStack::isEmpty);
     }
 
     @Override

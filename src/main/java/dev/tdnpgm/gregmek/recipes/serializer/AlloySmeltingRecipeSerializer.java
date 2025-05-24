@@ -3,7 +3,7 @@ package dev.tdnpgm.gregmek.recipes.serializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import dev.tdnpgm.gregmek.recipes.AlloySmelterRecipe;
+import dev.tdnpgm.gregmek.recipes.AlloySmeltingRecipe;
 import mekanism.api.SerializerHelper;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
@@ -15,32 +15,45 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.NotNull;
 
-public class AlloySmelterRecipeSerializer<RECIPE extends AlloySmelterRecipe> implements RecipeSerializer<RECIPE> {
-    private final AlloySmelterRecipeSerializer.IFactory<RECIPE> factory;
+public class AlloySmeltingRecipeSerializer<RECIPE extends AlloySmeltingRecipe> implements RecipeSerializer<RECIPE> {
+    private final AlloySmeltingRecipeSerializer.IFactory<RECIPE> factory;
 
-    public AlloySmelterRecipeSerializer(AlloySmelterRecipeSerializer.IFactory<RECIPE> factory) {
+    public AlloySmeltingRecipeSerializer(AlloySmeltingRecipeSerializer.IFactory<RECIPE> factory) {
         this.factory = factory;
     }
 
     public @NotNull RECIPE fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
         JsonElement mainInput = GsonHelper.isArrayNode(json, "mainInput") ? GsonHelper.getAsJsonArray(json, "mainInput") : GsonHelper.getAsJsonObject(json, "mainInput");
         ItemStackIngredient mainIngredient = IngredientCreatorAccess.item().deserialize(mainInput);
-        JsonElement secondaryInput = GsonHelper.isArrayNode(json, "secondaryInput") ? GsonHelper.getAsJsonArray(json, "secondaryInput") : GsonHelper.getAsJsonObject(json, "secondaryInput");
-        ItemStackIngredient extraIngredient = IngredientCreatorAccess.item().deserialize(secondaryInput);
-        ItemStack output = SerializerHelper.getItemStack(json, "output");
+        JsonElement extraInput = GsonHelper.isArrayNode(json, "extraInput") ? GsonHelper.getAsJsonArray(json, "extraInput") : GsonHelper.getAsJsonObject(json, "extraInput");
+        ItemStackIngredient secondaryIngredient = IngredientCreatorAccess.item().deserialize(extraInput);
+
+
+        JsonElement ticks = json.get("duration");
+        if (!GsonHelper.isNumberValue(ticks)) {
+            throw new JsonSyntaxException("Expected duration to be a number greater than zero.");
+        }
+        int duration = ticks.getAsJsonPrimitive().getAsInt();
+        if (duration <= 0) {
+            throw new JsonSyntaxException("Expected duration to be a number greater than zero.");
+        }
+
+        ItemStack output = SerializerHelper.getItemStack(json, "itemOutput");
         if (output.isEmpty()) {
             throw new JsonSyntaxException("Combiner recipe output must not be empty.");
         } else {
-            return this.factory.create(recipeId, mainIngredient, extraIngredient, output);
+            return this.factory.create(recipeId, mainIngredient, secondaryIngredient, duration, output);
         }
     }
 
     public RECIPE fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
         try {
-            ItemStackIngredient mainInput = IngredientCreatorAccess.item().read(buffer);
-            ItemStackIngredient secondaryInput = IngredientCreatorAccess.item().read(buffer);
+            ItemStackIngredient mainIngredient = IngredientCreatorAccess.item().read(buffer);
+            ItemStackIngredient secondaryIngredient = IngredientCreatorAccess.item().read(buffer);
+
+            int duration = buffer.readVarInt();
             ItemStack output = buffer.readItem();
-            return this.factory.create(recipeId, mainInput, secondaryInput, output);
+            return this.factory.create(recipeId, mainIngredient, secondaryIngredient, duration, output);
         } catch (Exception e) {
             Mekanism.logger.error("Error reading combiner recipe from packet.", e);
             throw e;
@@ -57,7 +70,7 @@ public class AlloySmelterRecipeSerializer<RECIPE extends AlloySmelterRecipe> imp
     }
 
     @FunctionalInterface
-    public interface IFactory<RECIPE extends AlloySmelterRecipe> {
-        RECIPE create(ResourceLocation id, ItemStackIngredient mainInput, ItemStackIngredient secondaryInput, ItemStack output);
+    public interface IFactory<RECIPE extends AlloySmeltingRecipe> {
+        RECIPE create(ResourceLocation id, ItemStackIngredient mainInputSolid, ItemStackIngredient secondaryInputSolid, int duration, ItemStack output);
     }
 }

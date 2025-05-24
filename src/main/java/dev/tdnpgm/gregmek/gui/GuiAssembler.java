@@ -30,7 +30,7 @@ public class GuiAssembler extends GuiConfigurableTile<TileEntityAssembler, Mekan
         this.addRenderableWidget(new GuiVerticalPowerBar(this, this.tile.getEnergyContainer(), 164, 15)).warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, this.tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY));
         MachineEnergyContainer<TileEntityAssembler> energyContainer = this.tile.getEnergyContainer();
         this.addRenderableWidget(new GuiEnergyTab(this, energyContainer, this.tile::getActive));
-        this.addRenderableWidget((new GuiProgress(this.tile::getScaledProgress, ProgressType.RIGHT, this, 86, 38))
+        this.addRenderableWidget((new GuiProgress(this.tile::getScaledProgress, ProgressType.RIGHT, this, 92, 38))
                         .jeiCategory(this.tile))
                 .warning(WarningTracker.WarningType.INPUT_DOESNT_PRODUCE_OUTPUT, this.tile.
                         getWarningCheck(CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT));

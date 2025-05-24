@@ -7,7 +7,6 @@
   "mixins": [
     "ClientboundUpdateRecipesPacketMixin",
     "MachineEnergyContainerMixin",
-    "MekanismJEIMixin",
     "MekanismRecipeMixin",
     "RecipeManagerMixin",
     "TileEntityRecipeMachineMixin",

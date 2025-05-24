@@ -27,7 +27,7 @@ public class Gregmek {
         Config.registerConfig();
         GMRecipeType.RECIPE_TYPES.register(modEventBus);
         GMBlocks.BLOCKS.register(modEventBus);
-        GregmekTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        GMTleEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         GMRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         GMContainerTypes.CONTAINER_TYPES.register(modEventBus);
         GMCreativeTabs.CREATIVE_TABS.register(modEventBus);

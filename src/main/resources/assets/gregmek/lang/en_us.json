@@ -3,5 +3,7 @@
   "container.gregmek.assembler": "Assembler",
   "block.gregmek.assembler": "Assembler",
   "container.gregmek.alloy_smelter": "Alloy Smelter",
-  "block.gregmek.alloy_smelter": "Alloy Smelter"
+  "block.gregmek.alloy_smelter": "Alloy Smelter",
+  "container.gregmek.bender": "Bender",
+  "block.gregmek.bender": "Bender"
 }

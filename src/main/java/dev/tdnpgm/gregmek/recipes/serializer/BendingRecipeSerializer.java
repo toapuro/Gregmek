@@ -1,14 +1,10 @@
-package dev.tdnpgm.gregmek.recipes.serializer;//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
+package dev.tdnpgm.gregmek.recipes.serializer;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
+import dev.tdnpgm.gregmek.recipes.BendingRecipe;
 import mekanism.api.SerializerHelper;
-import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import mekanism.common.Mekanism;
@@ -22,10 +18,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> implements RecipeSerializer<RECIPE> {
-    private final IFactory<RECIPE> factory;
+public class BendingRecipeSerializer<RECIPE extends BendingRecipe> implements RecipeSerializer<RECIPE> {
+    private final BendingRecipeSerializer.IFactory<RECIPE> factory;
 
-    public AssemblingRecipeSerializer(IFactory<RECIPE> factory) {
+    public BendingRecipeSerializer(BendingRecipeSerializer.IFactory<RECIPE> factory) {
         this.factory = factory;
     }
 
@@ -38,15 +34,6 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
             itemIngredients.add(solidIngredient);
         }
 
-        List<FluidStackIngredient> fluidIngredients = new ArrayList<>();
-        if (json.has("fluidInput")) {
-            JsonElement fluidInput = GsonHelper.isArrayNode(json, "fluidInput") ? GsonHelper.getAsJsonArray(json, "fluidInput") : GsonHelper.getAsJsonObject(json, "fluidInput");
-            if (fluidInput.isJsonArray() && !fluidInput.getAsJsonArray().isEmpty() ||
-                    fluidInput.isJsonObject() && fluidInput.getAsJsonObject().size() != 0) {
-                fluidIngredients.add(IngredientCreatorAccess.fluid().deserialize(fluidInput));
-            }
-        }
-
         JsonElement ticks = json.get("duration");
         if (!GsonHelper.isNumberValue(ticks)) {
             throw new JsonSyntaxException("Expected duration to be a number greater than zero.");
@@ -56,16 +43,12 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
             throw new JsonSyntaxException("Expected duration to be a number greater than zero.");
         }
 
-        ItemStack itemOutput = ItemStack.EMPTY;
-        if (json.has("itemOutput")) {
-            itemOutput = SerializerHelper.getItemStack(json, "itemOutput");
-            if (itemOutput.isEmpty()) {
-                throw new JsonSyntaxException("Assembling item output must not be empty, if it is defined.");
-            }
-
+        ItemStack output = SerializerHelper.getItemStack(json, "itemOutput");
+        if (output.isEmpty()) {
+            throw new JsonSyntaxException("Combiner recipe output must not be empty.");
+        } else {
+            return this.factory.create(recipeId, itemIngredients, duration, output);
         }
-
-        return this.factory.create(recipeId, itemIngredients, fluidIngredients, duration, itemOutput);
     }
 
     public RECIPE fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
@@ -77,18 +60,11 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
                 itemStackIngredients.add(inputSolidIngredient);
             }
 
-            List<FluidStackIngredient> inputFluids = new ArrayList<>();
-            int inputFluidSize = buffer.readVarInt();
-            for (int i = 0; i < inputFluidSize; i++) {
-                FluidStackIngredient inputFluid = IngredientCreatorAccess.fluid().read(buffer);
-                inputFluids.add(inputFluid);
-            }
-
             int duration = buffer.readVarInt();
-            ItemStack outputItem = buffer.readItem();
-            return this.factory.create(recipeId, itemStackIngredients, inputFluids, duration, outputItem);
+            ItemStack output = buffer.readItem();
+            return this.factory.create(recipeId, itemStackIngredients, duration, output);
         } catch (Exception e) {
-            Mekanism.logger.error("Error reading assembling recipe from packet.", e);
+            Mekanism.logger.error("Error reading combiner recipe from packet.", e);
             throw e;
         }
     }
@@ -97,13 +73,13 @@ public class AssemblingRecipeSerializer<RECIPE extends AssemblingRecipe> impleme
         try {
             recipe.write(buffer);
         } catch (Exception e) {
-            Mekanism.logger.error("Error writing assembling recipe to packet.", e);
+            Mekanism.logger.error("Error writing combiner recipe to packet.", e);
             throw e;
         }
     }
 
     @FunctionalInterface
-    public interface IFactory<RECIPE extends AssemblingRecipe> {
-        RECIPE create(ResourceLocation id, List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluids, int duration, ItemStack outputItem);
+    public interface IFactory<RECIPE extends BendingRecipe> {
+        RECIPE create(ResourceLocation id, List<ItemStackIngredient> inputs, int duration, ItemStack output);
     }
 }

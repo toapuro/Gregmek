@@ -1,6 +1,6 @@
 package dev.tdnpgm.gregmek.gui;
 
-import dev.tdnpgm.gregmek.tile.TileEntityAlloySmelter;
+import dev.tdnpgm.gregmek.tile.TileEntityBender;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.gui.GuiConfigurableTile;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
@@ -15,8 +15,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-public class GuiAlloySmelter extends GuiConfigurableTile<TileEntityAlloySmelter, MekanismTileContainer<TileEntityAlloySmelter>> {
-    public GuiAlloySmelter(MekanismTileContainer<TileEntityAlloySmelter> container, Inventory inv, Component title) {
+public class GuiBender extends GuiConfigurableTile<TileEntityBender, MekanismTileContainer<TileEntityBender>> {
+    public GuiBender(MekanismTileContainer<TileEntityBender> container, Inventory inv, Component title) {
         super(container, inv, title);
         this.dynamicSlots = true;
     }
@@ -25,7 +25,7 @@ public class GuiAlloySmelter extends GuiConfigurableTile<TileEntityAlloySmelter,
         super.addGuiElements();
         this.addRenderableWidget(new GuiVerticalPowerBar(this, this.tile.getEnergyContainer(), 164, 15))
                 .warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, this.tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY));
-        MachineEnergyContainer<TileEntityAlloySmelter> energyContainer = this.tile.getEnergyContainer();
+        MachineEnergyContainer<TileEntityBender> energyContainer = this.tile.getEnergyContainer();
         this.addRenderableWidget(new GuiEnergyTab(this, energyContainer, this.tile::getActive));
         this.addRenderableWidget((new GuiProgress(this.tile::getScaledProgress, ProgressType.RIGHT, this, 79, 38)).jeiCategory(this.tile))
                 .warning(WarningTracker.WarningType.INPUT_DOESNT_PRODUCE_OUTPUT, this.tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT));

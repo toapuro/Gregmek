@@ -19,9 +19,6 @@ public interface MekanismRecipeTypeAccessor {
         return null;
     }
 
-//    @Invoker("clearCaches")
-//    void clearCaches();
-
     @Mutable
     @Accessor("registryName")
     void setRegistryName(ResourceLocation resourceLocation);

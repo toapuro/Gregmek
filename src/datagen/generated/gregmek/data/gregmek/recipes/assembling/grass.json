@@ -1,7 +1,7 @@
 {
   "type": "gregmek:assembling",
   "duration": 2,
-  "extraEnergyRequired": 100000,
+  "extraEnergyRequired": 2000000,
   "fluidInput": {
     "amount": 100,
     "tag": "minecraft:water"

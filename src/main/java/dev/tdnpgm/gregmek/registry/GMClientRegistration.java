@@ -3,6 +3,7 @@ package dev.tdnpgm.gregmek.registry;
 import dev.tdnpgm.gregmek.Gregmek;
 import dev.tdnpgm.gregmek.gui.GuiAlloySmelter;
 import dev.tdnpgm.gregmek.gui.GuiAssembler;
+import dev.tdnpgm.gregmek.gui.GuiBender;
 import mekanism.client.ClientRegistrationUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,6 +19,7 @@ public class GMClientRegistration {
         event.register(Registries.MENU, helper -> {
             ClientRegistrationUtil.registerScreen(GMContainerTypes.ASSEMBLER, GuiAssembler::new);
             ClientRegistrationUtil.registerScreen(GMContainerTypes.ALLOY_SMELTER, GuiAlloySmelter::new);
+            ClientRegistrationUtil.registerScreen(GMContainerTypes.BENDER, GuiBender::new);
         });
     }
 }

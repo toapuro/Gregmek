@@ -92,12 +92,12 @@ public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredi
     }
 
     public void write(FriendlyByteBuf buffer) {
-        buffer.writeInt(inputSolids.size());
+        buffer.writeVarInt(inputSolids.size());
         for (ItemStackIngredient inputSolid : inputSolids) {
             inputSolid.write(buffer);
         }
 
-        buffer.writeInt(inputFluids.size());
+        buffer.writeVarInt(inputFluids.size());
         for (FluidStackIngredient inputFluid : inputFluids) {
             inputFluid.write(buffer);
         }

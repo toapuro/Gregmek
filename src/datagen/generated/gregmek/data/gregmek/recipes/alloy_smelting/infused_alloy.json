@@ -1,5 +1,5 @@
 {
-  "type": "gregmek:alloy_smelter",
+  "type": "gregmek:alloy_smelting",
   "duration": 40,
   "mainInput": {
     "ingredient": {
@@ -7,13 +7,13 @@
     },
     "amount": 1
   },
-  "secondaryInput": {
+  "extraInput": {
     "ingredient": {
       "item": "minecraft:redstone"
     },
     "amount": 1
   },
-  "output": {
+  "itemOutput": {
     "item": "mekanism:alloy_infused"
   },
   "amount": 1
