@@ -44,10 +44,6 @@ public abstract class AlloySmeltingRecipe extends MekanismRecipe implements Pred
         return List.of(mainInput, secondaryInput);
     }
 
-    public List<InputIngredient<ItemStack>> getInputsIngredient() {
-        return List.of(mainInput, secondaryInput);
-    }
-
     public int getDuration() {
         return this.duration;
     }

@@ -31,12 +31,12 @@ public class SingleShapelessInputsCachedRecipe<
 
     private final Predicate<INPUT> inputEmptyCheck;
     private final Function<List<INPUT>, OUTPUT> outputGetter;
-    private final Supplier<List<InputIngredient<INPUT>>> inputsSupplier;
+    private final Supplier<List<? extends InputIngredient<INPUT>>> inputsSupplier;
     private final INPUT emptyInput;
     @Nullable
     private OUTPUT output;
 
-    public SingleShapelessInputsCachedRecipe(RECIPE recipe, BooleanSupplier recheckAllErrors, List<IInputHandler<INPUT>> inputHandlers, int maxInputs, IOutputHandler<OUTPUT> outputHandler, Predicate<INPUT> inputEmptyCheck, INPUT emptyInput, Function<List<INPUT>, OUTPUT> outputGetter, Supplier<List<InputIngredient<@NotNull INPUT>>> inputsSupplier) {
+    public SingleShapelessInputsCachedRecipe(RECIPE recipe, BooleanSupplier recheckAllErrors, List<IInputHandler<INPUT>> inputHandlers, int maxInputs, IOutputHandler<OUTPUT> outputHandler, Predicate<INPUT> inputEmptyCheck, INPUT emptyInput, Function<List<INPUT>, OUTPUT> outputGetter, Supplier<List<? extends InputIngredient<@NotNull INPUT>>> inputsSupplier) {
         super(recipe, recheckAllErrors);
         this.recipeItems = GregmekUtils.makeListOf(() -> emptyInput, maxInputs);
         this.inputHandlers = Objects.requireNonNull(inputHandlers, "Item input handler cannot be null.");
@@ -58,7 +58,7 @@ public class SingleShapelessInputsCachedRecipe<
                 ItemStack::isEmpty,
                 ItemStack.EMPTY,
                 recipe::getOutput,
-                recipe::getInputsIngredient
+                recipe::getInputSolids
         );
     }
 
@@ -73,7 +73,7 @@ public class SingleShapelessInputsCachedRecipe<
                 ItemStack::isEmpty,
                 ItemStack.EMPTY,
                 recipe::getOutput,
-                recipe::getInputsIngredient
+                recipe::getInputSolids
         );
     }
 

@@ -69,9 +69,10 @@ minecraft {
         }
 
         data {
-            workingDirectory project.file('run-data')
+            environment 'target', 'fmluserdevdata'
 
-            args '--mod', mod_id, '--all', '--output', file('src/datagen/resources/'), '--existing', file('src/main/resources/')
+            args '--all', '--output', file('src/datagen/generated/'),
+                    '--mod', 'gregmek', '--existing', file('src/main/resources/')
         }
     }
 }

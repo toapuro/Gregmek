@@ -1,6 +1,7 @@
 package dev.tdnpgm.gregmek.recipes.jei;
 
 import dev.tdnpgm.gregmek.recipes.AlloySmeltingRecipe;
+import dev.tdnpgm.gregmek.registry.GMBlocks;
 import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.progress.ProgressType;
@@ -24,7 +25,7 @@ public class AlloySmelterRecipeCategory extends BaseRecipeCategory<AlloySmelting
     private final GuiSlot output;
 
     public AlloySmelterRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<AlloySmeltingRecipe> recipeType) {
-        super(helper, recipeType, MekanismBlocks.COMBINER, 28, 16, 144, 54);
+        super(helper, recipeType, GMBlocks.ALLOY_SMELTER, 28, 16, 144, 54);
         this.addElement(new GuiUpArrow(this, 68, 38));
         this.input = this.addSlot(SlotType.INPUT, 64, 17);
         this.secondary = this.addSlot(SlotType.EXTRA, 64, 53);

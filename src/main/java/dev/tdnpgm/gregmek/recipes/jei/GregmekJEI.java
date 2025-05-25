@@ -61,9 +61,9 @@ public class GregmekJEI implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registry) {
-        CatalystRegistryHelper.register(registry, GMBlocks.ASSEMBLING_MACHINE, GMJEIRecipeTypes.ASSEMBLING);
-        CatalystRegistryHelper.register(registry, GMBlocks.ALLOY_SMELTER, GMJEIRecipeTypes.ALLOY_SMELTING);
-        CatalystRegistryHelper.register(registry, GMBlocks.BENDER, GMJEIRecipeTypes.BENDING);
+        CatalystRegistryHelper.register(registry, GMBlocks.ASSEMBLING_MACHINE);
+        CatalystRegistryHelper.register(registry, GMBlocks.ALLOY_SMELTER);
+        CatalystRegistryHelper.register(registry, GMBlocks.BENDER);
     }
 
     @Override
