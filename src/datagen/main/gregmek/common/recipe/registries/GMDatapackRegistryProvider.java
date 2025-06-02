@@ -1,6 +1,6 @@
 package gregmek.common.recipe.registries;
 
-import dev.tdnpgm.gregmek.Gregmek;
+import dev.toapuro.gregmek.Gregmek;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.PackOutput;

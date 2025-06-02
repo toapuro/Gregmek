@@ -1,6 +1,6 @@
 package gregmek.common.recipe.impl;
 
-import dev.tdnpgm.gregmek.Gregmek;
+import dev.toapuro.gregmek.Gregmek;
 import gregmek.common.recipe.BaseRecipeProvider;
 import gregmek.common.recipe.ISubRecipeProvider;
 import net.minecraft.data.PackOutput;

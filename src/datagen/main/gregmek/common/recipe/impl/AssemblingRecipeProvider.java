@@ -1,7 +1,7 @@
 package gregmek.common.recipe.impl;
 
-import dev.tdnpgm.gregmek.Gregmek;
-import dev.tdnpgm.gregmek.common.helper.FloatingLongHelper;
+import dev.toapuro.gregmek.Gregmek;
+import dev.toapuro.gregmek.common.helper.FloatingLongHelper;
 import gregmek.common.recipe.ISubRecipeProvider;
 import gregmek.common.recipe.builder.ItemFluidsRecipeBuilder;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;

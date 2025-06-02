@@ -1,7 +1,7 @@
 package gregmek.common.recipe.builder.abstracts;
 
 import com.google.gson.JsonObject;
-import dev.tdnpgm.gregmek.Gregmek;
+import dev.toapuro.gregmek.Gregmek;
 import mekanism.api.datagen.recipe.MekanismRecipeBuilder;
 import mekanism.api.math.FloatingLong;
 import net.minecraft.data.recipes.FinishedRecipe;
