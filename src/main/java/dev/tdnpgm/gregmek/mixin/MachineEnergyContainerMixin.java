@@ -2,7 +2,7 @@ package dev.tdnpgm.gregmek.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.tdnpgm.gregmek.Gregmek;
-import dev.tdnpgm.gregmek.recipes.additional.IHasEnergyRequired;
+import dev.tdnpgm.gregmek.content.recipe.additional.IHasEnergyRequired;
 import mekanism.api.math.FloatingLong;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.tile.base.TileEntityMekanism;

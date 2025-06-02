@@ -5,7 +5,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
 import com.google.gson.JsonElement;
 import dev.tdnpgm.gregmek.Gregmek;
-import dev.tdnpgm.gregmek.lang.GregmekLang;
+import dev.tdnpgm.gregmek.content.lang.GregmekLang;
 import gregmek.common.recipe.impl.GMRecipeProvider;
 import gregmek.common.recipe.registries.GMDatapackRegistryProvider;
 import mekanism.common.advancements.MekanismCriteriaTriggers;

@@ -2,8 +2,8 @@ package gregmek.common.recipe.builder;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
-import dev.tdnpgm.gregmek.recipes.BendingRecipe;
+import dev.tdnpgm.gregmek.content.recipe.AssemblingRecipe;
+import dev.tdnpgm.gregmek.content.recipe.BendingRecipe;
 import gregmek.common.recipe.builder.abstracts.GMProcessingRecipeBuilder;
 import gregmek.common.recipe.builder.abstracts.GMRecipeBuilder;
 import mekanism.api.SerializerHelper;

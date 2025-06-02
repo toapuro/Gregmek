@@ -1,8 +1,8 @@
 package dev.tdnpgm.gregmek;
 
 import com.mojang.logging.LogUtils;
-import dev.tdnpgm.gregmek.registry.*;
-import dev.tdnpgm.gregmek.registry.recipe.GMRecipeType;
+import dev.tdnpgm.gregmek.content.registry.*;
+import dev.tdnpgm.gregmek.content.registry.recipe.GMRecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
