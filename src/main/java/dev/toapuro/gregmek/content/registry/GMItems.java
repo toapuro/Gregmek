@@ -1,5 +1,6 @@
 package dev.toapuro.gregmek.content.registry;
 
+import dev.toapuro.gregmek.Gregmek;
 import dev.toapuro.gregmek.content.item.ProgrammedCircuit;
 import dev.toapuro.gregmek.content.resource.GMResourceType;
 import dev.toapuro.gregmek.content.tier.GMBaseTier;
@@ -10,7 +11,7 @@ import mekanism.common.resource.MiscResource;
 import net.minecraft.world.item.Item;
 
 public class GMItems {
-    public static final ItemDeferredRegister ITEMS = new ItemDeferredRegister("mekanism");
+    public static final ItemDeferredRegister ITEMS = new ItemDeferredRegister(Gregmek.MODID);
     public static final ItemRegistryObject<Item> STEEL_PLATE;
     public static final ItemRegistryObject<Item> BRONZE_PLATE;
     public static final ItemRegistryObject<Item> DIAMOND_PLATE;
