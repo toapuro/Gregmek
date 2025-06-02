@@ -1,0 +1,15 @@
+{
+  "type": "gregmek:bending",
+  "duration": 40,
+  "fluidInput": {},
+  "itemInputs": [
+    {
+      "ingredient": {
+        "tag": "forge:dusts/steel"
+      }
+    }
+  ],
+  "itemOutput": {
+    "item": "mekanism:ingot_steel"
+  }
+}

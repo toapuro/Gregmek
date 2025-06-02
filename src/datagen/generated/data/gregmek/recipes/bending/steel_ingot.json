@@ -1,0 +1,16 @@
+{
+  "type": "gregmek:bending",
+  "duration": 40,
+  "fluidInput": {},
+  "itemInputs": [
+    {
+      "amount": 9,
+      "ingredient": {
+        "tag": "forge:nuggets/steel"
+      }
+    }
+  ],
+  "itemOutput": {
+    "item": "mekanism:ingot_steel"
+  }
+}

@@ -6,6 +6,8 @@ import dev.tdnpgm.gregmek.recipes.lookup.IDoubleMultipleRecipeLookupHandler;
 import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
 import dev.tdnpgm.gregmek.registry.GMBlocks;
 import dev.tdnpgm.gregmek.registry.recipe.GMRecipeType;
+import dev.tdnpgm.gregmek.tile.component.TileComponentCircuit;
+import dev.tdnpgm.gregmek.tile.interfaces.ITileProgrammable;
 import dev.tdnpgm.gregmek.utils.GregmekUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
@@ -52,11 +54,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRecipe> implements IDoubleMultipleRecipeLookupHandler.ItemsFluidsMultipleRecipeLookupHandler<AssemblingRecipe> {
+public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRecipe> implements IDoubleMultipleRecipeLookupHandler.ItemsFluidsMultipleRecipeLookupHandler<AssemblingRecipe>, ITileProgrammable {
     public static final RecipeError NOT_ENOUGH_ITEM_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_FLUID_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR = RecipeError.create();
     private static final List<RecipeError> TRACKED_ERROR_TYPES;
+
+    private final TileComponentCircuit circuitComponent;
     private final IOutputHandler<@NotNull ItemStack> outputHandler;
     private final List<IInputHandler<@NotNull ItemStack>> itemInputHandlers;
     private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
@@ -104,6 +108,8 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
                 .toList();
         this.fluidInputHandler = InputHelper.getInputHandler(this.inputFluidTank, NOT_ENOUGH_FLUID_INPUT_ERROR);
         this.outputHandler = OutputHelper.getOutputHandler(this.outputSlot, RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+
+        this.circuitComponent = new TileComponentCircuit(this);
     }
 
     protected @NotNull IFluidTankHolder getInitialFluidTanks(IContentsListener listener, IContentsListener recipeCacheListener) {
@@ -143,7 +149,7 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
                 .tracksWarnings((slot) ->
                         slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, this.getWarningCheck(RecipeError.NOT_ENOUGH_OUTPUT_SPACE)));
 
-        builder.addSlot(this.energySlot = EnergyInventorySlot.fillOrConvert(this.energyContainer, this::getLevel, listener, 130, 60));
+        builder.addSlot(this.energySlot = EnergyInventorySlot.fillOrConvert(this.energyContainer, this::getLevel, listener, 130, 56));
         return builder.build();
     }
 
@@ -209,5 +215,10 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
 
     static {
         TRACKED_ERROR_TYPES = List.of(RecipeError.NOT_ENOUGH_ENERGY, NOT_ENOUGH_ITEM_INPUT_ERROR, NOT_ENOUGH_FLUID_INPUT_ERROR, NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR, RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
+    }
+
+    @Override
+    public TileComponentCircuit getCircuitComponent() {
+        return this.circuitComponent;
     }
 }

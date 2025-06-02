@@ -22,7 +22,7 @@ public class GMRecipeType {
 
     public static <RECIPE extends MekanismRecipe, INPUT_CACHE extends IInputRecipeCache> MekanismRecipeType<RECIPE, INPUT_CACHE> make(String name, Function<MekanismRecipeType<RECIPE, INPUT_CACHE>, INPUT_CACHE> inputCacheCreator) {
         MekanismRecipeType<RECIPE, INPUT_CACHE> recipeType =
-                MekanismRecipeTypeAccessor.invokeInit(name, (t) -> null);
+                MekanismRecipeTypeAccessor.invokeNew(name, (t) -> null);
         if(recipeType instanceof MekanismRecipeTypeAccessor accessor) {
             accessor.setRegistryName(Gregmek.rl(name));
             accessor.setInputCache(inputCacheCreator.apply(recipeType));

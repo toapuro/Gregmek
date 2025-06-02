@@ -115,6 +115,7 @@ gradle-app.setting
 run/
 run-data/
 runs/
+.cache/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar

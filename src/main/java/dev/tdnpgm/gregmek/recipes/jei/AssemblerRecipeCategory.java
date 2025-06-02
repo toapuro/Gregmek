@@ -4,7 +4,6 @@ import dev.tdnpgm.gregmek.recipes.AssemblingRecipe;
 import dev.tdnpgm.gregmek.registry.GMBlocks;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
-import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.gauge.GaugeType;
 import mekanism.client.gui.element.gauge.GuiFluidGauge;
@@ -32,8 +31,7 @@ public class AssemblerRecipeCategory extends BaseRecipeCategory<AssemblingRecipe
     private final GuiSlot output;
 
     public AssemblerRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<AssemblingRecipe> recipeType) {
-        super(helper, recipeType, GMBlocks.ASSEMBLING_MACHINE, 28, 16, 144, 54);
-        this.addElement(new GuiUpArrow(this, 68, 38));
+        super(helper, recipeType, GMBlocks.ASSEMBLING_MACHINE, 18, 20, 144, 54);
 
         this.inputSlots = new ArrayList<>();
         for (int i = 0; i < AssemblingRecipe.MAX_ITEM_SLOTS; i++) {
@@ -44,10 +42,10 @@ public class AssemblerRecipeCategory extends BaseRecipeCategory<AssemblingRecipe
         }
 
         this.output = this.addSlot(SlotType.OUTPUT, 130, 35);
-        this.inputFluidGauge = this.addElement(GuiFluidGauge.getDummy(GaugeType.STANDARD.with(DataType.INPUT), this, 45, 17));
-        this.addSlot(SlotType.POWER, 39, 35).with(SlotOverlay.POWER);
+        this.inputFluidGauge = this.addElement(GuiFluidGauge.getDummy(GaugeType.SMALL_MED.with(DataType.INPUT), this, 70, 16));
+        this.addSlot(SlotType.POWER, 130, 56).with(SlotOverlay.POWER);
         this.addElement(new GuiVerticalPowerBar(this, FULL_BAR, 164, 15));
-        this.addSimpleProgress(ProgressType.BAR, 107, 38);
+        this.addSimpleProgress(ProgressType.BAR, 94, 38);
     }
 
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, AssemblingRecipe recipe, @NotNull IFocusGroup focusGroup) {

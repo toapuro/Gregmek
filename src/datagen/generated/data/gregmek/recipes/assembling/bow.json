@@ -1,0 +1,24 @@
+{
+  "type": "gregmek:assembling",
+  "duration": 40,
+  "fluidInput": {},
+  "itemInputs": [
+    {
+      "ingredient": {
+        "item": "minecraft:string"
+      }
+    },
+    {
+      "ingredient": {
+        "type": "forge:nbt",
+        "count": 1,
+        "item": "minecraft:bow",
+        "nbt": "{Damage:0}"
+      }
+    }
+  ],
+  "itemOutput": {
+    "item": "minecraft:bow",
+    "nbt": "{Damage:0}"
+  }
+}

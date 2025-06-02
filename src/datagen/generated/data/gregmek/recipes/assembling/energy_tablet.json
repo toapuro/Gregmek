@@ -1,0 +1,26 @@
+{
+  "type": "gregmek:assembling",
+  "duration": 40,
+  "fluidInput": {},
+  "itemInputs": [
+    {
+      "ingredient": {
+        "tag": "mekanism:enriched/redstone"
+      }
+    },
+    {
+      "amount": 2,
+      "ingredient": {
+        "tag": "mekanism:alloys/infused"
+      }
+    },
+    {
+      "ingredient": {
+        "tag": "mekanism:enriched/gold"
+      }
+    }
+  ],
+  "itemOutput": {
+    "item": "mekanism:energy_tablet"
+  }
+}

@@ -10,7 +10,9 @@
     "MekanismRecipeMixin",
     "RecipeManagerMixin",
     "TileEntityRecipeMachineMixin",
-    "accessor.MekanismRecipeTypeAccessor"
+    "accessor.ContainerTypeRegistryObjectAccessor",
+    "accessor.MekanismRecipeTypeAccessor",
+    "accessor.WrappedDeferredRegisterAccessor"
   ],
   "client": [
   ],

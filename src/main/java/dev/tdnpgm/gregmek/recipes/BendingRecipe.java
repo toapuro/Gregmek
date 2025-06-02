@@ -1,7 +1,6 @@
 package dev.tdnpgm.gregmek.recipes;
 
 import mekanism.api.recipes.MekanismRecipe;
-import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,6 +16,7 @@ import java.util.function.Predicate;
 
 public abstract class BendingRecipe extends MekanismRecipe implements Predicate<List<ItemStack>> {
     public static int MAX_ITEM_SLOTS = 2;
+    public static int MAX_FLUID_SLOTS = 1;
     private final List<ItemStackIngredient> inputSolids;
     private final int duration;
     private final ItemStack outputItem;

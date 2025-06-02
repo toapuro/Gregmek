@@ -31,6 +31,14 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs += ["src/datagen/main"]
+        }
+    }
+}
+
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
 
@@ -83,7 +91,7 @@ mixin {
     config "${mod_id}.mixins.json"
 }
 
-sourceSets.main.resources { srcDir 'src/datagen/generated/gregmek' }
+sourceSets.main.resources { srcDir 'src/datagen/generated/' }
 
 
 repositories {

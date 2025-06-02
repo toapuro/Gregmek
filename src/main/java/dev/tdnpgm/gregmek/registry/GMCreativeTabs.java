@@ -14,6 +14,7 @@ public class GMCreativeTabs {
         GREGMEK = CREATIVE_TABS.registerMain(GregmekLang.GREGMEK, GMBlocks.ASSEMBLING_MACHINE,
                 (builder) -> builder.withSearchBar().displayItems((displayParameters, output) -> {
                     CreativeTabDeferredRegister.addToDisplay(GMBlocks.BLOCKS, output);
+                    CreativeTabDeferredRegister.addToDisplay(GMItems.ITEMS, output);
                 }));
     }
 }

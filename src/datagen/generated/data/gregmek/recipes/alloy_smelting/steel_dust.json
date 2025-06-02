@@ -1,0 +1,17 @@
+{
+  "type": "gregmek:alloy_smelting",
+  "duration": 200,
+  "extraInput": {
+    "ingredient": {
+      "tag": "forge:dusts/steel"
+    }
+  },
+  "itemOutput": {
+    "item": "mekanism:dust_steel"
+  },
+  "mainInput": {
+    "ingredient": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+}

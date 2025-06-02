@@ -6,7 +6,8 @@ import net.minecraft.Util;
 
 public enum GregmekLang implements ILangEntry {
     GREGMEK("general", "gregmek"),
-    GREGMEK_DESCRIPTION("general", "description");
+    GREGMEK_DESCRIPTION("general", "description"),
+    CIRCUIT_CONFIG("configuration", "circuit");
 
     private final String key;
 

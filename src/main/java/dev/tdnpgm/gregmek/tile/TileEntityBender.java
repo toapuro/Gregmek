@@ -6,6 +6,8 @@ import dev.tdnpgm.gregmek.recipes.lookup.ISingleMultipleRecipeLookupHandler;
 import dev.tdnpgm.gregmek.recipes.lookup.cache.GregmekInputRecipeCache;
 import dev.tdnpgm.gregmek.registry.GMBlocks;
 import dev.tdnpgm.gregmek.registry.recipe.GMRecipeType;
+import dev.tdnpgm.gregmek.tile.component.TileComponentCircuit;
+import dev.tdnpgm.gregmek.tile.interfaces.ITileProgrammable;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -41,13 +43,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class TileEntityBender extends TileEntityProgressMachine<BendingRecipe> implements ISingleMultipleRecipeLookupHandler.ItemsMultipleRecipeLookupHandler<BendingRecipe> {
+public class TileEntityBender extends TileEntityProgressMachine<BendingRecipe> implements ISingleMultipleRecipeLookupHandler.ItemsMultipleRecipeLookupHandler<BendingRecipe>, ITileProgrammable {
     private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES;
 
     static {
         TRACKED_ERROR_TYPES = List.of(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     }
 
+    private final TileComponentCircuit circuitComponent;
     private final IOutputHandler<@NotNull ItemStack> outputHandler;
     private final IInputHandler<@NotNull ItemStack> inputHandler;
     private final IInputHandler<@NotNull ItemStack> secondaryInputHandler;
@@ -87,6 +90,8 @@ public class TileEntityBender extends TileEntityProgressMachine<BendingRecipe> i
         this.inputHandler = InputHelper.getInputHandler(this.mainInputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
         this.secondaryInputHandler = InputHelper.getInputHandler(this.secondaryInputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT);
         this.outputHandler = OutputHelper.getOutputHandler(this.outputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+
+        this.circuitComponent = new TileComponentCircuit(this);
     }
 
     protected @NotNull IEnergyContainerHolder getInitialEnergyContainers(IContentsListener listener, IContentsListener recipeCacheListener) {
@@ -97,16 +102,16 @@ public class TileEntityBender extends TileEntityProgressMachine<BendingRecipe> i
 
     protected @NotNull IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener) {
         InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this::getDirection, this::getConfig);
-        builder.addSlot(this.mainInputSlot = InputInventorySlot.at(this::containsRecipe, this::containsRecipe, recipeCacheListener, 39, 35))
+        builder.addSlot(this.mainInputSlot = InputInventorySlot.at(this::containsRecipe, this::containsRecipe, recipeCacheListener, 25, 35))
                 .tracksWarnings((slot) -> slot
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, this.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT)));
-        builder.addSlot(this.secondaryInputSlot = InputInventorySlot.at(this::containsRecipe, this::containsRecipe, recipeCacheListener, 57, 35))
+        builder.addSlot(this.secondaryInputSlot = InputInventorySlot.at(this::containsRecipe, this::containsRecipe, recipeCacheListener, 43, 35))
                 .tracksWarnings((slot) -> slot
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, this.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT)));
-        builder.addSlot(this.outputSlot = OutputInventorySlot.at(listener, 116, 35))
+        builder.addSlot(this.outputSlot = OutputInventorySlot.at(listener, 124, 35))
                 .tracksWarnings((slot) -> slot
                         .warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, this.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE)));
-        builder.addSlot(this.energySlot = EnergyInventorySlot.fillOrConvert(this.energyContainer, this::getLevel, listener, 116, 60));
+        builder.addSlot(this.energySlot = EnergyInventorySlot.fillOrConvert(this.energyContainer, this::getLevel, listener, 124, 56));
         return builder.build();
     }
 
@@ -160,5 +165,10 @@ public class TileEntityBender extends TileEntityProgressMachine<BendingRecipe> i
         if (update) {
             this.recalculateUpgrades(Upgrade.SPEED);
         }
+    }
+
+    @Override
+    public TileComponentCircuit getCircuitComponent() {
+        return this.circuitComponent;
     }
 }
