@@ -39,7 +39,7 @@ public class AssemblingCachedRecipe extends CachedRecipe<AssemblingRecipe> {
         if (tracker.shouldContinueChecking()) {
             ArrayList<ItemStackIngredient> itemSolidsRemain = new ArrayList<>(this.recipe.getInputSolids());
 
-            this.recipeItems.replaceAll(itemStack -> ItemStack.EMPTY);
+            Collections.fill(this.recipeItems, ItemStack.EMPTY);
             for (int i = 0; i < this.itemInputHandlers.size(); i++) {
                 IInputHandler<@NotNull ItemStack> itemInputHandler = this.itemInputHandlers.get(i);
                 Iterator<ItemStackIngredient> queueIterator = itemSolidsRemain.iterator();

@@ -21,8 +21,6 @@ import org.jetbrains.annotations.NotNull;
 public class GuiAssembler extends GuiConfigurableTile<TileEntityAssembler, GMTileContainer<TileEntityAssembler>> {
     public GuiAssembler(GMTileContainer<TileEntityAssembler> container, Inventory inv, Component title) {
         super(container, inv, title);
-//        this.imageHeight += 30;
-//        this.inventoryLabelY = this.imageHeight - 30;
         this.dynamicSlots = true;
     }
 

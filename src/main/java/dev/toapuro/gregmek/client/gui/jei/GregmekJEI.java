@@ -1,4 +1,4 @@
-package dev.toapuro.gregmek.content.recipe.jei;
+package dev.toapuro.gregmek.client.gui.jei;
 
 import dev.toapuro.gregmek.Gregmek;
 import dev.toapuro.gregmek.content.registry.GMBlocks;

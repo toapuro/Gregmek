@@ -1,7 +1,6 @@
 package dev.toapuro.gregmek.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import dev.toapuro.gregmek.Gregmek;
 import dev.toapuro.gregmek.content.recipe.additional.IHasEnergyRequired;
 import mekanism.api.math.FloatingLong;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
@@ -23,7 +22,6 @@ public abstract class MachineEnergyContainerMixin<TILE extends TileEntityMekanis
     @ModifyReturnValue(method = "getBaseEnergyPerTick", at = @At("RETURN"))
     public FloatingLong modifyBaseEnergyPerTick(FloatingLong original) {
         if (tile instanceof IHasEnergyRequired energyRequiredHolder) {
-            Gregmek.DEBUG_LOGGER.info("Modified Energy Container: {}", energyRequiredHolder.gregmek$getEnergyRequired());
             return baseEnergyPerTick.add(energyRequiredHolder.gregmek$getEnergyRequired());
         }
         return original;

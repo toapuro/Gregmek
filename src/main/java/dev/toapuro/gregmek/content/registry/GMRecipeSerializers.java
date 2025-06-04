@@ -4,12 +4,7 @@ import dev.toapuro.gregmek.Gregmek;
 import dev.toapuro.gregmek.content.recipe.AlloySmeltingRecipe;
 import dev.toapuro.gregmek.content.recipe.AssemblingRecipe;
 import dev.toapuro.gregmek.content.recipe.BendingRecipe;
-import dev.toapuro.gregmek.content.recipe.impl.AlloySmeltingIRecipe;
-import dev.toapuro.gregmek.content.recipe.impl.AssemblingIRecipe;
-import dev.toapuro.gregmek.content.recipe.impl.BendingIRecipe;
-import dev.toapuro.gregmek.content.recipe.serializer.AlloySmeltingRecipeSerializer;
-import dev.toapuro.gregmek.content.recipe.serializer.AssemblingRecipeSerializer;
-import dev.toapuro.gregmek.content.recipe.serializer.BendingRecipeSerializer;
+import dev.toapuro.gregmek.content.recipe.serializer.GMSerializerTypes;
 import mekanism.common.registration.impl.RecipeSerializerDeferredRegister;
 import mekanism.common.registration.impl.RecipeSerializerRegistryObject;
 
@@ -20,8 +15,8 @@ public class GMRecipeSerializers {
     public static final RecipeSerializerRegistryObject<BendingRecipe> BENDING;
 
     static {
-        ASSEMBLING = RECIPE_SERIALIZERS.register("assembling", () -> new AssemblingRecipeSerializer<>(AssemblingIRecipe::new));
-        ALLOY_SMELTING = RECIPE_SERIALIZERS.register("alloy_smelting", () -> new AlloySmeltingRecipeSerializer<>(AlloySmeltingIRecipe::new));
-        BENDING = RECIPE_SERIALIZERS.register("bending", () -> new BendingRecipeSerializer<>(BendingIRecipe::new));
+        ASSEMBLING = RECIPE_SERIALIZERS.register("assembling", () -> GMSerializerTypes.ASSEMBLING);
+        ALLOY_SMELTING = RECIPE_SERIALIZERS.register("alloy_smelting", () -> GMSerializerTypes.ALLOY_SMELTING);
+        BENDING = RECIPE_SERIALIZERS.register("bending", () -> GMSerializerTypes.BENDING);
     }
 }

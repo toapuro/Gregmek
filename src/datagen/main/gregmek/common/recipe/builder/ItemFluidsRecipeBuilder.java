@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @NothingNullByDefault
 public class ItemFluidsRecipeBuilder extends GMProcessingRecipeBuilder<ItemFluidsRecipeBuilder> {
@@ -122,8 +121,7 @@ public class ItemFluidsRecipeBuilder extends GMProcessingRecipeBuilder<ItemFluid
 
         public void serializeRecipeData(@NotNull JsonObject json) {
             json.add("itemInputs", serializeIngredients(ItemFluidsRecipeBuilder.this.inputSolids));
-            Optional<FluidStackIngredient> firstFluid = ItemFluidsRecipeBuilder.this.inputFluids.stream().findFirst();
-            json.add("fluidInput", firstFluid.map(InputIngredient::serialize).orElseGet(JsonObject::new));
+            json.add("fluidInputs", serializeIngredients(ItemFluidsRecipeBuilder.this.inputFluids));
 
             json.addProperty("duration", ItemFluidsRecipeBuilder.this.duration);
             if (!ItemFluidsRecipeBuilder.this.outputItem.isEmpty()) {

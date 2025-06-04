@@ -12,10 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -49,7 +46,7 @@ public class SingleShapelessInputsCachedRecipe<
 
     public static SingleShapelessInputsCachedRecipe<ItemStack, ItemStack, AlloySmeltingRecipe> alloySmelter(AlloySmeltingRecipe recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> mainInputHandler, IInputHandler<@NotNull ItemStack> extraInputHandler, IOutputHandler<@NotNull ItemStack> outputHandler) {
         Objects.requireNonNull(recipe);
-        return new SingleShapelessInputsCachedRecipe<ItemStack, ItemStack, AlloySmeltingRecipe>(
+        return new SingleShapelessInputsCachedRecipe<>(
                 recipe,
                 recheckAllErrors,
                 List.of(mainInputHandler, extraInputHandler),
@@ -64,7 +61,7 @@ public class SingleShapelessInputsCachedRecipe<
 
     public static SingleShapelessInputsCachedRecipe<ItemStack, ItemStack, BendingRecipe> bender(BendingRecipe recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> mainInputHandler, IInputHandler<@NotNull ItemStack> extraInputHandler, IOutputHandler<@NotNull ItemStack> outputHandler) {
         Objects.requireNonNull(recipe);
-        return new SingleShapelessInputsCachedRecipe<ItemStack, ItemStack, BendingRecipe>(
+        return new SingleShapelessInputsCachedRecipe<>(
                 recipe,
                 recheckAllErrors,
                 List.of(mainInputHandler, extraInputHandler),
@@ -82,7 +79,7 @@ public class SingleShapelessInputsCachedRecipe<
         if (tracker.shouldContinueChecking()) {
             ArrayList<InputIngredient<INPUT>> recipeRemain = new ArrayList<>(inputsSupplier.get());
 
-            this.recipeItems.replaceAll(itemStack -> emptyInput);
+            Collections.fill(this.recipeItems, emptyInput);
             for (int i = 0; i < this.inputHandlers.size(); i++) {
                 IInputHandler<INPUT> inputHandler = this.inputHandlers.get(i);
                 Iterator<InputIngredient<INPUT>> queueIterator = recipeRemain.iterator();

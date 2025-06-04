@@ -1,5 +1,7 @@
 package dev.toapuro.gregmek.content.recipe;
 
+import dev.toapuro.gregmek.common.api.exceptions.GMRecipeError;
+import dev.toapuro.gregmek.common.helper.RecipeHelper;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.core.RegistryAccess;
@@ -24,15 +26,10 @@ public abstract class AlloySmeltingRecipe extends MekanismRecipe implements Pred
     public AlloySmeltingRecipe(ResourceLocation id, ItemStackIngredient mainInput, ItemStackIngredient secondaryInput, int duration, ItemStack output) {
         super(id);
 
-        this.mainInput = Objects.requireNonNull(mainInput, "Item solids cannot be null.");
-        this.secondaryInput = Objects.requireNonNull(secondaryInput, "Item solids cannot be null.");
+        this.mainInput = Objects.requireNonNull(mainInput, GMRecipeError.INPUT_NULL.getMessage());
+        this.secondaryInput = Objects.requireNonNull(secondaryInput, GMRecipeError.INPUT_NULL.getMessage());
         this.duration = duration;
-        Objects.requireNonNull(output, "Output cannot be null.");
-        if (output.isEmpty()) {
-            throw new IllegalArgumentException("Output cannot be empty.");
-        } else {
-            this.output = output.copy();
-        }
+        this.output = RecipeHelper.requireNotEmpty(output, GMRecipeError.OUTPUT_NULL, GMRecipeError.OUTPUT_EMPTY).copy();
     }
 
     public boolean test(List<ItemStack> inputs) {
@@ -41,6 +38,18 @@ public abstract class AlloySmeltingRecipe extends MekanismRecipe implements Pred
 
     public List<ItemStackIngredient> getInputSolids() {
         return List.of(mainInput, secondaryInput);
+    }
+
+    public ItemStackIngredient getMainInput() {
+        return mainInput;
+    }
+
+    public ItemStackIngredient getSecondaryInput() {
+        return secondaryInput;
+    }
+
+    public ItemStack getOutput() {
+        return output;
     }
 
     public int getDuration() {
@@ -68,11 +77,7 @@ public abstract class AlloySmeltingRecipe extends MekanismRecipe implements Pred
 //        return this.mainInput.hasNoMatchingInstances() || this.secondaryInput.hasNoMatchingInstances();
     }
 
-    public void write(FriendlyByteBuf buffer) {
-        mainInput.write(buffer);
-        secondaryInput.write(buffer);
-
-        buffer.writeVarInt(this.duration);
-        buffer.writeItem(this.output);
+    @Override
+    public void write(FriendlyByteBuf friendlyByteBuf) {
     }
 }

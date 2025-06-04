@@ -58,6 +58,14 @@ public abstract class BendingRecipe extends MekanismRecipe implements Predicate<
         return this.outputItem.copy();
     }
 
+    @Contract(
+            value = " -> new",
+            pure = true
+    )
+    public ItemStack getOutput() {
+        return this.outputItem.copy();
+    }
+
     public @NotNull ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
         return this.outputItem.copy();
     }
@@ -72,12 +80,5 @@ public abstract class BendingRecipe extends MekanismRecipe implements Predicate<
     }
 
     public void write(FriendlyByteBuf buffer) {
-        buffer.writeVarInt(inputSolids.size());
-        for (ItemStackIngredient inputSolid : inputSolids) {
-            inputSolid.write(buffer);
-        }
-
-        buffer.writeVarInt(this.duration);
-        buffer.writeItem(this.outputItem);
     }
 }

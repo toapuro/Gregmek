@@ -1,6 +1,6 @@
-package dev.toapuro.gregmek.content.recipe.jei;
+package dev.toapuro.gregmek.client.gui.jei;
 
-import dev.toapuro.gregmek.content.recipe.BendingRecipe;
+import dev.toapuro.gregmek.content.recipe.AlloySmeltingRecipe;
 import dev.toapuro.gregmek.content.registry.GMBlocks;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.progress.ProgressType;
@@ -17,22 +17,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class BenderRecipeCategory extends BaseRecipeCategory<BendingRecipe> {
+public class AlloySmelterRecipeCategory extends BaseRecipeCategory<AlloySmeltingRecipe> {
     private final GuiSlot mainSlot;
     private final GuiSlot extraSlot;
     private final GuiSlot output;
 
-    public BenderRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<BendingRecipe> recipeType) {
-        super(helper, recipeType, GMBlocks.BENDER, 18, 20, 144, 54);
+    public AlloySmelterRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<AlloySmeltingRecipe> recipeType) {
+        super(helper, recipeType, GMBlocks.ALLOY_SMELTER, 18, 20, 144, 54);
         this.mainSlot = this.addSlot(SlotType.INPUT, 25, 35);
         this.extraSlot = this.addSlot(SlotType.INPUT, 43, 35);
         this.output = this.addSlot(SlotType.OUTPUT, 124, 35);
         this.addSlot(SlotType.POWER, 124, 56).with(SlotOverlay.POWER);
         this.addElement(new GuiVerticalPowerBar(this, FULL_BAR, 164, 15));
-        this.addSimpleProgress(ProgressType.BAR, 79, 38);
+        this.addSimpleProgress(ProgressType.RIGHT, 79, 38);
     }
 
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, BendingRecipe recipe, @NotNull IFocusGroup focusGroup) {
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, AlloySmeltingRecipe recipe, @NotNull IFocusGroup focusGroup) {
         List<GuiSlot> inputSlots = List.of(mainSlot, extraSlot);
         for (int i = 0; i < recipe.getInputSolids().size(); i++) {
             this.initItem(builder, RecipeIngredientRole.INPUT, inputSlots.get(i), recipe.getInputSolids().get(i).getRepresentations());

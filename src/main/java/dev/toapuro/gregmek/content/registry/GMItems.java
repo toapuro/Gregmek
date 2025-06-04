@@ -3,7 +3,7 @@ package dev.toapuro.gregmek.content.registry;
 import dev.toapuro.gregmek.Gregmek;
 import dev.toapuro.gregmek.content.item.ProgrammedCircuit;
 import dev.toapuro.gregmek.content.resource.GMResourceType;
-import dev.toapuro.gregmek.content.tier.GMBaseTier;
+import dev.toapuro.gregmek.content.tier.GMTier;
 import mekanism.common.registration.impl.ItemDeferredRegister;
 import mekanism.common.registration.impl.ItemRegistryObject;
 import mekanism.common.resource.IResource;
@@ -39,15 +39,15 @@ public class GMItems {
         REFINED_OBSIDIAN_PLATE = registerPlate(MiscResource.REFINED_OBSIDIAN);
         REFINED_GLOWSTONE_PLATE = registerPlate(MiscResource.REFINED_GLOWSTONE);
 
-        PRIMITIVE_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.PRIMITIVE);
-        CRUDE_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.CRUDE);
-        INDUSTRIAL_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.INDUSTRIAL);
-        IMPROVED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.IMPROVED);
-        REFINED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.REFINED);
-        INTEGRATED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.INTEGRATED);
-        FABRICATED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.FABRICATED);
-        QUANTUM_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.QUANTUM);
-        ENTANGLED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMBaseTier.ENTANGLED);
+        PRIMITIVE_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.PRIMITIVE);
+        CRUDE_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.CRUDE);
+        INDUSTRIAL_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.INDUSTRIAL);
+        IMPROVED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.IMPROVED);
+        REFINED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.REFINED);
+        INTEGRATED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.INTEGRATED);
+        FABRICATED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.FABRICATED);
+        QUANTUM_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.QUANTUM);
+        ENTANGLED_PROGRAMMED_CIRCUIT = registerProgrammedCircuit(GMTier.ENTANGLED);
     }
 
     private static ItemRegistryObject<Item> registerPlate(IResource resource) {
@@ -55,7 +55,7 @@ public class GMItems {
         return ITEMS.register(prefix + "_" + resource.getRegistrySuffix());
     }
 
-    private static ItemRegistryObject<Item> registerProgrammedCircuit(GMBaseTier tier) {
+    private static ItemRegistryObject<Item> registerProgrammedCircuit(GMTier tier) {
         return ITEMS.register(tier.getLowerName() + "_programmed_circuit", () ->
                 new ProgrammedCircuit(new Item.Properties(), tier));
     }

@@ -1,5 +1,7 @@
 package dev.toapuro.gregmek.content.recipe;
 
+import dev.toapuro.gregmek.common.api.exceptions.GMRecipeError;
+import dev.toapuro.gregmek.common.helper.RecipeHelper;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -25,25 +27,10 @@ public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredi
     public AssemblingRecipe(ResourceLocation id, List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluids, int duration, ItemStack outputItem) {
         super(id);
 
-        Objects.requireNonNull(inputSolids, "Item input cannot be null.");
-        this.inputSolids = inputSolids;
-        this.inputFluids = Objects.requireNonNull(inputFluids, "Fluid input cannot be null.");
-        if (duration <= 0) {
-            throw new IllegalArgumentException("Duration must be positive.");
-        } else {
-            this.duration = duration;
-            Objects.requireNonNull(outputItem, "Item output cannot be null.");
-            if (outputItem.isEmpty()) {
-                throw new IllegalArgumentException("At least one output must not be empty.");
-            } else {
-                Objects.requireNonNull(outputItem, "Item output cannot be null.");
-                if (outputItem.isEmpty()) {
-                    throw new IllegalArgumentException("At least one output must not be empty.");
-                } else {
-                    this.outputItem = outputItem.copy();
-                }
-            }
-        }
+        this.inputSolids = Objects.requireNonNull(inputSolids, GMRecipeError.INPUT_NULL.getMessage());
+        this.inputFluids = Objects.requireNonNull(inputFluids, GMRecipeError.INPUT_NULL.getMessage());
+        this.duration = RecipeHelper.validateDuration(duration);
+        this.outputItem = RecipeHelper.requireNotEmpty(outputItem, GMRecipeError.OUTPUT_NULL, GMRecipeError.OUTPUT_EMPTY).copy();
     }
 
     public List<ItemStackIngredient> getInputSolids() {
@@ -91,18 +78,8 @@ public abstract class AssemblingRecipe extends MekanismRecipe implements BiPredi
 //        return this.inputSolids.stream().anyMatch(InputIngredient::hasNoMatchingInstances) || this.inputFluid.hasNoMatchingInstances();
     }
 
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeVarInt(inputSolids.size());
-        for (ItemStackIngredient inputSolid : inputSolids) {
-            inputSolid.write(buffer);
-        }
+    @Override
+    public void write(FriendlyByteBuf friendlyByteBuf) {
 
-        buffer.writeVarInt(inputFluids.size());
-        for (FluidStackIngredient inputFluid : inputFluids) {
-            inputFluid.write(buffer);
-        }
-
-        buffer.writeVarInt(this.duration);
-        buffer.writeItem(this.outputItem);
     }
 }
