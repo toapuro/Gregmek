@@ -3,7 +3,6 @@ package gregmek.common.recipe.builder;
 import com.google.gson.JsonObject;
 import gregmek.common.recipe.builder.abstracts.GMProcessingRecipeBuilder;
 import mekanism.api.SerializerHelper;
-import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +17,7 @@ public class TwoItemStackToItemStackRecipeBuilder extends GMProcessingRecipeBuil
     private final ItemStack output;
 
     protected TwoItemStackToItemStackRecipeBuilder(int duration, ItemStackIngredient mainInput, ItemStackIngredient extraInput, ItemStack output, ResourceLocation serializerName) {
-        super(serializerName, false, FloatingLong.ZERO, duration);
+        super(serializerName, duration);
         this.mainInput = mainInput;
         this.extraInput = extraInput;
         this.output = output;

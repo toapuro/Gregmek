@@ -21,10 +21,11 @@ public class Gregmek {
 
     @SuppressWarnings("removal")
     public Gregmek() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        FMLJavaModLoadingContext modLoadingContext = FMLJavaModLoadingContext.get();
+        IEventBus modEventBus = modLoadingContext.getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
 
-        Config.registerConfig();
+        CommonConfig.registerConfig(modLoadingContext);
         GMRecipeType.RECIPE_TYPES.register(modEventBus);
         GMBlocks.BLOCKS.register(modEventBus);
         GMItems.ITEMS.register(modEventBus);
@@ -33,8 +34,7 @@ public class Gregmek {
         GMContainerTypes.CONTAINER_TYPES.register(modEventBus);
         GMCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.CONFIG.getConfigSpec());
     }
 
     @Contract(

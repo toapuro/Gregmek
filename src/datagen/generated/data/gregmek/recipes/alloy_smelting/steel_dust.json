@@ -1,9 +1,10 @@
 {
   "type": "gregmek:alloy_smelting",
   "duration": 200,
+  "extraEnergyRequired": 1000000,
   "extraInput": {
     "ingredient": {
-      "tag": "forge:dusts/steel"
+      "tag": "forge:dusts/coal"
     }
   },
   "itemOutput": {

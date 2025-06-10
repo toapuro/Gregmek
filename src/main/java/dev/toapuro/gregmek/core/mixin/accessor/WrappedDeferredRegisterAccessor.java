@@ -1,4 +1,4 @@
-package dev.toapuro.gregmek.mixin.accessor;
+package dev.toapuro.gregmek.core.mixin.accessor;
 
 import mekanism.common.registration.WrappedDeferredRegister;
 import mekanism.common.registration.WrappedRegistryObject;

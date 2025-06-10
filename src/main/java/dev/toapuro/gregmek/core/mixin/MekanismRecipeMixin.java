@@ -1,6 +1,6 @@
-package dev.toapuro.gregmek.mixin;
+package dev.toapuro.gregmek.core.mixin;
 
-import dev.toapuro.gregmek.content.recipe.additional.IHasEnergyRequired;
+import dev.toapuro.gregmek.core.interfaces.IHasExtraEnergyRequired;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.MekanismRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MekanismRecipe.class)
-public class MekanismRecipeMixin implements IHasEnergyRequired {
+public class MekanismRecipeMixin implements IHasExtraEnergyRequired {
     @Unique
     private FloatingLong gregmek$energyRequired;
 
@@ -21,12 +21,12 @@ public class MekanismRecipeMixin implements IHasEnergyRequired {
     }
 
     @Override
-    public FloatingLong gregmek$getEnergyRequired() {
+    public FloatingLong gregmek$getExtraEnergyRequired() {
         return gregmek$energyRequired;
     }
 
     @Override
-    public void gregmek$setEnergyRequired(FloatingLong energyRequired) {
+    public void gregmek$setExtraEnergyRequired(FloatingLong energyRequired) {
         gregmek$energyRequired = energyRequired;
     }
 }

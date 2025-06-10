@@ -1,7 +1,7 @@
 {
   "type": "gregmek:bending",
   "duration": 40,
-  "fluidInput": {},
+  "fluidInputs": [],
   "itemInputs": [
     {
       "amount": 9,

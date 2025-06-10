@@ -6,7 +6,7 @@ public record FieldBinding<RECIPE, V>(
         AbstractSerializerField<V> serializerField,
         Function<RECIPE, V> fieldExtractor
 ) {
-    public void readFromRecipe(RECIPE recipe) {
+    public void loadFromRecipe(RECIPE recipe) {
         this.serializerField.set(fieldExtractor.apply(recipe));
     }
 }

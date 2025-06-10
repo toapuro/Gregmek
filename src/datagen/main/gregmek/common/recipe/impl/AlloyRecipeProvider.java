@@ -1,6 +1,7 @@
 package gregmek.common.recipe.impl;
 
 import dev.toapuro.gregmek.Gregmek;
+import dev.toapuro.gregmek.common.helper.FloatingLongHelper;
 import gregmek.common.recipe.ISubRecipeProvider;
 import gregmek.common.recipe.builder.TwoItemStackToItemStackRecipeBuilder;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
@@ -21,6 +22,7 @@ public class AlloyRecipeProvider implements ISubRecipeProvider {
                         IngredientCreatorAccess.item().from(Items.IRON_INGOT, 1),
                         IngredientCreatorAccess.item().from(MekanismTags.Items.DUSTS_COAL, 1),
                         MekanismItems.STEEL_DUST.getItemStack())
+                .extraEnergyRequired(FloatingLongHelper.getFloatingLong(1000, FloatingLongHelper.Unit.KILO))
                 .build(consumer, Gregmek.rl(basePath + "steel_dust"));
     }
 }

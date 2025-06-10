@@ -5,10 +5,8 @@ import com.google.gson.JsonObject;
 import dev.toapuro.gregmek.content.recipe.AssemblingRecipe;
 import dev.toapuro.gregmek.content.recipe.BendingRecipe;
 import gregmek.common.recipe.builder.abstracts.GMProcessingRecipeBuilder;
-import gregmek.common.recipe.builder.abstracts.GMRecipeBuilder;
 import mekanism.api.SerializerHelper;
 import mekanism.api.annotations.NothingNullByDefault;
-import mekanism.api.math.FloatingLong;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -24,18 +22,16 @@ import java.util.List;
 public class ItemFluidsRecipeBuilder extends GMProcessingRecipeBuilder<ItemFluidsRecipeBuilder> {
     private final List<ItemStackIngredient> inputSolids;
     private List<FluidStackIngredient> inputFluids;
-    private final int duration;
     private final ItemStack outputItem;
     private final int maxItemInputs;
     private final int maxFluidInputs;
 
     protected ItemFluidsRecipeBuilder(List<ItemStackIngredient> inputSolids, List<FluidStackIngredient> inputFluids, int maxItemInputs, int maxFluidInputs, int duration, ItemStack outputItem, ResourceLocation serializerName) {
-        super(serializerName, false, FloatingLong.ZERO, duration);
+        super(serializerName, duration);
         this.inputSolids = inputSolids;
         this.inputFluids = inputFluids;
         this.maxItemInputs = maxItemInputs;
         this.maxFluidInputs = maxFluidInputs;
-        this.duration = duration;
         this.outputItem = outputItem;
     }
 
@@ -106,7 +102,7 @@ public class ItemFluidsRecipeBuilder extends GMProcessingRecipeBuilder<ItemFluid
         return new RecipeResult(id);
     }
 
-    public class RecipeResult extends GMRecipeBuilder<ItemFluidsRecipeBuilder>.RecipeResult {
+    public class RecipeResult extends GMProcessingRecipeBuilder<ItemFluidsRecipeBuilder>.RecipeResult {
         protected RecipeResult(ResourceLocation id) {
             super(id);
         }
@@ -123,7 +119,6 @@ public class ItemFluidsRecipeBuilder extends GMProcessingRecipeBuilder<ItemFluid
             json.add("itemInputs", serializeIngredients(ItemFluidsRecipeBuilder.this.inputSolids));
             json.add("fluidInputs", serializeIngredients(ItemFluidsRecipeBuilder.this.inputFluids));
 
-            json.addProperty("duration", ItemFluidsRecipeBuilder.this.duration);
             if (!ItemFluidsRecipeBuilder.this.outputItem.isEmpty()) {
                 json.add("itemOutput", SerializerHelper.serializeItemStack(ItemFluidsRecipeBuilder.this.outputItem));
             }

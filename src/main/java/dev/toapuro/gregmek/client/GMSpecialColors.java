@@ -1,4 +1,4 @@
-package dev.toapuro.gregmek.client.gui;
+package dev.toapuro.gregmek.client;
 
 import mekanism.client.render.lib.ColorAtlas;
 

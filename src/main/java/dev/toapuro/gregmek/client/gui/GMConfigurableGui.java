@@ -7,14 +7,9 @@ import mekanism.common.tile.interfaces.ISideConfiguration;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-public class GMConfigurableTile<TILE extends TileEntityMekanism & ISideConfiguration, CONTAINER extends MekanismTileContainer<TILE>>
+public class GMConfigurableGui<TILE extends TileEntityMekanism & ISideConfiguration, CONTAINER extends MekanismTileContainer<TILE>>
         extends GuiConfigurableTile<TILE, CONTAINER> {
-    protected GMConfigurableTile(CONTAINER container, Inventory inv, Component title) {
+    protected GMConfigurableGui(CONTAINER container, Inventory inv, Component title) {
         super(container, inv, title);
-    }
-
-    @Override
-    protected void addSlots() {
-        super.addSlots();
     }
 }

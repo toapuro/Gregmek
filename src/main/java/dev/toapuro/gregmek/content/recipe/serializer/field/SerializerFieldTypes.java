@@ -14,25 +14,25 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class SerializerFieldTypes {
-    public static SerializerFieldType<ItemStackIngredient> ITEM_INGREDIENT;
-    public static SerializerFieldType<List<ItemStackIngredient>> ITEM_INGREDIENTS;
-    public static SerializerFieldType<FluidStackIngredient> FLUID_INGREDIENT;
-    public static SerializerFieldType<List<FluidStackIngredient>> FLUID_INGREDIENTS;
-    public static SerializerFieldType<Integer> DURATION;
-    public static SerializerFieldType<ItemStack> ITEM_STACK;
-    public static SerializerFieldType<GMTier> TIER;
+    public static final SerializerFieldType<ItemStackIngredient> ITEM_INGREDIENT;
+    public static final SerializerFieldType<List<ItemStackIngredient>> ITEM_INGREDIENTS;
+    public static final SerializerFieldType<FluidStackIngredient> FLUID_INGREDIENT;
+    public static final SerializerFieldType<List<FluidStackIngredient>> FLUID_INGREDIENTS;
+    public static final SerializerFieldType<Integer> DURATION;
+    public static final SerializerFieldType<ItemStack> ITEM_STACK;
+    public static final SerializerFieldType<GMTier> TIER;
 
     static {
         ITEM_INGREDIENT = SerializerFieldType.create((fieldName) -> new AbstractSerializerField<ItemStackIngredient>() {
             @Override
-            public void readRecipe(JsonObject jsonObject) {
-                value = RecipeJsonHelper.deserializeIngredient(jsonObject, fieldName,
+            public ItemStackIngredient readJsonRecipe(JsonObject jsonObject) {
+                return RecipeJsonHelper.deserializeIngredient(jsonObject, fieldName,
                         jsonElement -> IngredientCreatorAccess.item().deserialize(jsonElement));
             }
 
             @Override
-            public void readFromBuffer(FriendlyByteBuf byteBuf) {
-                value = IngredientCreatorAccess.item().read(byteBuf);
+            public ItemStackIngredient readBuffer(FriendlyByteBuf byteBuf) {
+                return IngredientCreatorAccess.item().read(byteBuf);
             }
 
             @Override
@@ -43,13 +43,13 @@ public class SerializerFieldTypes {
 
         ITEM_INGREDIENTS = SerializerFieldType.create((fieldName) -> new AbstractSerializerField<List<ItemStackIngredient>>() {
             @Override
-            public void readRecipe(JsonObject jsonObject) {
-                value = RecipeJsonHelper.deserializeItemIngredients(jsonObject, fieldName);
+            public List<ItemStackIngredient> readJsonRecipe(JsonObject jsonObject) {
+                return RecipeJsonHelper.deserializeItemIngredients(jsonObject, fieldName);
             }
 
             @Override
-            public void readFromBuffer(FriendlyByteBuf byteBuf) {
-                value = BufferHelper.readList(byteBuf, i ->
+            public List<ItemStackIngredient> readBuffer(FriendlyByteBuf byteBuf) {
+                return BufferHelper.readList(byteBuf, i ->
                         IngredientCreatorAccess.item().read(byteBuf));
             }
 
@@ -61,14 +61,14 @@ public class SerializerFieldTypes {
         });
         FLUID_INGREDIENT = SerializerFieldType.create((fieldName) -> new AbstractSerializerField<FluidStackIngredient>() {
             @Override
-            public void readRecipe(JsonObject jsonObject) {
-                value = RecipeJsonHelper.deserializeIngredient(jsonObject, fieldName,
+            public FluidStackIngredient readJsonRecipe(JsonObject jsonObject) {
+                return RecipeJsonHelper.deserializeIngredient(jsonObject, fieldName,
                         jsonElement -> IngredientCreatorAccess.fluid().deserialize(jsonElement));
             }
 
             @Override
-            public void readFromBuffer(FriendlyByteBuf byteBuf) {
-                value = IngredientCreatorAccess.fluid().read(byteBuf);
+            public FluidStackIngredient readBuffer(FriendlyByteBuf byteBuf) {
+                return IngredientCreatorAccess.fluid().read(byteBuf);
             }
 
             @Override
@@ -79,13 +79,13 @@ public class SerializerFieldTypes {
 
         FLUID_INGREDIENTS = SerializerFieldType.create((fieldName) -> new AbstractSerializerField<List<FluidStackIngredient>>() {
             @Override
-            public void readRecipe(JsonObject jsonObject) {
-                value = RecipeJsonHelper.deserializeFluidIngredients(jsonObject, fieldName);
+            public List<FluidStackIngredient> readJsonRecipe(JsonObject jsonObject) {
+                return RecipeJsonHelper.deserializeFluidIngredients(jsonObject, fieldName);
             }
 
             @Override
-            public void readFromBuffer(FriendlyByteBuf byteBuf) {
-                value = BufferHelper.readList(byteBuf, i ->
+            public List<FluidStackIngredient> readBuffer(FriendlyByteBuf byteBuf) {
+                return BufferHelper.readList(byteBuf, i ->
                         IngredientCreatorAccess.fluid().read(byteBuf));
             }
 
@@ -98,13 +98,13 @@ public class SerializerFieldTypes {
 
         DURATION = SerializerFieldType.create((fieldName) -> new AbstractSerializerField<Integer>() {
             @Override
-            public void readRecipe(JsonObject jsonObject) {
-                value = RecipeJsonHelper.validateDuration(jsonObject, "duration");
+            public Integer readJsonRecipe(JsonObject jsonObject) {
+                return RecipeJsonHelper.validateDuration(jsonObject, "duration");
             }
 
             @Override
-            public void readFromBuffer(FriendlyByteBuf byteBuf) {
-                value = byteBuf.readVarInt();
+            public Integer readBuffer(FriendlyByteBuf byteBuf) {
+                return byteBuf.readVarInt();
             }
 
             @Override
@@ -115,13 +115,13 @@ public class SerializerFieldTypes {
 
         ITEM_STACK = SerializerFieldType.create((fieldName) -> new AbstractSerializerField<ItemStack>() {
             @Override
-            public void readRecipe(JsonObject jsonObject) {
-                value = SerializerHelper.getItemStack(jsonObject, fieldName);
+            public ItemStack readJsonRecipe(JsonObject jsonObject) {
+                return SerializerHelper.getItemStack(jsonObject, fieldName);
             }
 
             @Override
-            public void readFromBuffer(FriendlyByteBuf byteBuf) {
-                value = byteBuf.readItem();
+            public ItemStack readBuffer(FriendlyByteBuf byteBuf) {
+                return byteBuf.readItem();
             }
 
             @Override
@@ -132,13 +132,13 @@ public class SerializerFieldTypes {
 
         TIER = SerializerFieldType.create((fieldName) -> new AbstractSerializerField<GMTier>() {
             @Override
-            public void readRecipe(JsonObject jsonObject) {
-                value = RecipeJsonHelper.deserializeEnum(jsonObject, fieldName, GMTier.values());
+            public GMTier readJsonRecipe(JsonObject jsonObject) {
+                return RecipeJsonHelper.deserializeEnum(jsonObject, fieldName, GMTier.values());
             }
 
             @Override
-            public void readFromBuffer(FriendlyByteBuf byteBuf) {
-                value = GMTier.values()[byteBuf.readVarInt()];
+            public GMTier readBuffer(FriendlyByteBuf byteBuf) {
+                return GMTier.values()[byteBuf.readVarInt()];
             }
 
             @Override

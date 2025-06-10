@@ -1,6 +1,6 @@
 package dev.toapuro.gregmek.client.gui.element.tab;
 
-import dev.toapuro.gregmek.client.gui.GMSpecialColors;
+import dev.toapuro.gregmek.client.GMSpecialColors;
 import dev.toapuro.gregmek.content.tile.container.GMTileContainer;
 import dev.toapuro.gregmek.content.tile.interfaces.ITileProgrammable;
 import mekanism.client.gui.GuiMekanism;

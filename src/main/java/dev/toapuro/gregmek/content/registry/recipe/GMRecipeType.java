@@ -5,7 +5,7 @@ import dev.toapuro.gregmek.content.recipe.AlloySmeltingRecipe;
 import dev.toapuro.gregmek.content.recipe.AssemblingRecipe;
 import dev.toapuro.gregmek.content.recipe.BendingRecipe;
 import dev.toapuro.gregmek.content.recipe.lookup.cache.GMInputRecipeCache;
-import dev.toapuro.gregmek.mixin.accessor.MekanismRecipeTypeAccessor;
+import dev.toapuro.gregmek.core.mixin.accessor.MekanismRecipeTypeAccessor;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.cache.IInputRecipeCache;

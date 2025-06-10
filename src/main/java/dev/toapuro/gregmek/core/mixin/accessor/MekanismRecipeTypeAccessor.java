@@ -1,4 +1,4 @@
-package dev.toapuro.gregmek.mixin.accessor;
+package dev.toapuro.gregmek.core.mixin.accessor;
 
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.common.recipe.MekanismRecipeType;

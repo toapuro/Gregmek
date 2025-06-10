@@ -4,7 +4,6 @@ import dev.toapuro.gregmek.client.gui.element.tab.GuiCircuitConfigTab;
 import dev.toapuro.gregmek.content.tile.TileEntityAssembler;
 import dev.toapuro.gregmek.content.tile.container.GMTileContainer;
 import mekanism.api.recipes.cache.CachedRecipe;
-import mekanism.client.gui.GuiConfigurableTile;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.gauge.GaugeType;
 import mekanism.client.gui.element.gauge.GuiFluidGauge;
@@ -13,12 +12,10 @@ import mekanism.client.gui.element.progress.ProgressType;
 import mekanism.client.gui.element.tab.GuiEnergyTab;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.inventory.warning.WarningTracker;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import org.jetbrains.annotations.NotNull;
 
-public class GuiAssembler extends GuiConfigurableTile<TileEntityAssembler, GMTileContainer<TileEntityAssembler>> {
+public class GuiAssembler extends GMMachineGui<TileEntityAssembler, GMTileContainer<TileEntityAssembler>> {
     public GuiAssembler(GMTileContainer<TileEntityAssembler> container, Inventory inv, Component title) {
         super(container, inv, title);
         this.dynamicSlots = true;
@@ -38,11 +35,5 @@ public class GuiAssembler extends GuiConfigurableTile<TileEntityAssembler, GMTil
                 .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, this.tile
                         .getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT));
         this.addRenderableWidget(new GuiCircuitConfigTab<>(this, this.tile));
-    }
-
-    protected void drawForegroundText(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        this.renderTitleText(guiGraphics);
-        this.drawString(guiGraphics, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, this.titleTextColor());
-        super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 }

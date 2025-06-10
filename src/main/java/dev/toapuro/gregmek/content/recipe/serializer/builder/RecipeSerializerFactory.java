@@ -18,7 +18,7 @@ public class RecipeSerializerFactory {
             @Override
             public @NotNull R fromJson(@NotNull ResourceLocation resourceLocation, @NotNull JsonObject jsonObject) {
                 for (FieldBinding<R, ?> fieldBinding : result.fieldBindings()) {
-                    fieldBinding.serializerField().readRecipe(jsonObject);
+                    fieldBinding.serializerField().loadFromJsonRecipe(jsonObject);
                 }
                 return result.recipeDeserializer().apply(resourceLocation);
             }
@@ -26,7 +26,7 @@ public class RecipeSerializerFactory {
             @Override
             public @Nullable R fromNetwork(@NotNull ResourceLocation resourceLocation, @NotNull FriendlyByteBuf byteBuf) {
                 for (FieldBinding<R, ?> fieldBinding : result.fieldBindings()) {
-                    fieldBinding.serializerField().readFromBuffer(byteBuf);
+                    fieldBinding.serializerField().loadFromBuffer(byteBuf);
                 }
                 return result.recipeDeserializer().apply(resourceLocation);
             }
@@ -35,7 +35,7 @@ public class RecipeSerializerFactory {
             public void toNetwork(@NotNull FriendlyByteBuf byteBuf, @NotNull R recipe) {
                 // レシピからバッファーへ出力
                 for (FieldBinding<R, ?> fieldBinding : result.fieldBindings()) {
-                    fieldBinding.readFromRecipe(recipe);
+                    fieldBinding.loadFromRecipe(recipe);
                     fieldBinding.serializerField().writeToBuffer(byteBuf);
                 }
             }

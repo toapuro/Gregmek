@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.toapuro.gregmek.mixin",
+  "package": "dev.toapuro.gregmek.core.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "gregmek.refmap.json",
   "mixins": [

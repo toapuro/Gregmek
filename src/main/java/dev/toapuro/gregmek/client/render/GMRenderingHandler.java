@@ -1,7 +1,7 @@
 package dev.toapuro.gregmek.client.render;
 
 import dev.toapuro.gregmek.Gregmek;
-import dev.toapuro.gregmek.client.gui.GMSpecialColors;
+import dev.toapuro.gregmek.client.GMSpecialColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
