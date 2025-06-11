@@ -2,7 +2,7 @@ package dev.toapuro.gregmek.core.mixin;
 
 import com.google.gson.JsonObject;
 import dev.toapuro.gregmek.core.hooks.MixinHooksHandler;
-import dev.toapuro.gregmek.core.hooks.impl.IMekanismRecipeMixinHook;
+import dev.toapuro.gregmek.core.hooks.hook.IMekanismRecipeMixinHook;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -20,5 +20,4 @@ public abstract class RecipeManagerMixin {
         MixinHooksHandler.getHooks(IMekanismRecipeMixinHook.class).forEach(hook ->
                 hook.readFromJson(json, cir.getReturnValue()));
     }
-
 }

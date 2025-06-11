@@ -9,6 +9,7 @@
     "MachineEnergyContainerMixin",
     "MekanismRecipeMixin",
     "RecipeManagerMixin",
+    "TileEntityProgressMachineMixin",
     "TileEntityRecipeMachineMixin",
     "accessor.ContainerTypeRegistryObjectAccessor",
     "accessor.MekanismRecipeTypeAccessor",

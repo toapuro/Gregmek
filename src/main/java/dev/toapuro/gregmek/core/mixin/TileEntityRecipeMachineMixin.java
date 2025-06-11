@@ -1,8 +1,8 @@
 package dev.toapuro.gregmek.core.mixin;
 
 import dev.toapuro.gregmek.core.hooks.MixinHooksHandler;
-import dev.toapuro.gregmek.core.hooks.impl.IMekanismRecipeMixinHook;
-import dev.toapuro.gregmek.core.interfaces.IHasRecipeExtraEnergyRequired;
+import dev.toapuro.gregmek.core.hooks.hook.IMekanismRecipeMixinHook;
+import dev.toapuro.gregmek.core.interfaces.IHasExtraTileRecipeData;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.MekanismRecipe;
@@ -25,7 +25,7 @@ import java.util.List;
 
 @Mixin(TileEntityRecipeMachine.class)
 @Implements(@Interface(iface = IRecipeLookupHandler.class, prefix = "irecipe$"))
-public abstract class TileEntityRecipeMachineMixin<RECIPE extends MekanismRecipe> extends TileEntityConfigurableMachine implements IHasRecipeExtraEnergyRequired {
+public abstract class TileEntityRecipeMachineMixin<RECIPE extends MekanismRecipe> extends TileEntityConfigurableMachine implements IHasExtraTileRecipeData {
     @Unique
     private FloatingLong gregmek$recipeExtraEnergyRequired;
 

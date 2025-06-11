@@ -2,7 +2,7 @@ package dev.toapuro.gregmek.core.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.toapuro.gregmek.core.hooks.MixinHooksHandler;
-import dev.toapuro.gregmek.core.hooks.impl.IEnergyRequiredMixinHook;
+import dev.toapuro.gregmek.core.hooks.hook.IEnergyRequiredMixinHook;
 import mekanism.api.math.FloatingLong;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.tile.base.TileEntityMekanism;

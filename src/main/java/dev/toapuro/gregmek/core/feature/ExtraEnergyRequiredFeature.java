@@ -3,10 +3,10 @@ package dev.toapuro.gregmek.core.feature;
 import com.google.gson.JsonObject;
 import dev.toapuro.gregmek.core.hooks.MixinCompatibleSide;
 import dev.toapuro.gregmek.core.hooks.MixinHooksHandler;
-import dev.toapuro.gregmek.core.hooks.impl.IEnergyRequiredMixinHook;
-import dev.toapuro.gregmek.core.hooks.impl.IMekanismRecipeMixinHook;
-import dev.toapuro.gregmek.core.interfaces.IHasExtraEnergyRequired;
-import dev.toapuro.gregmek.core.interfaces.IHasRecipeExtraEnergyRequired;
+import dev.toapuro.gregmek.core.hooks.hook.IEnergyRequiredMixinHook;
+import dev.toapuro.gregmek.core.hooks.hook.IMekanismRecipeMixinHook;
+import dev.toapuro.gregmek.core.interfaces.IHasExtraRecipeData;
+import dev.toapuro.gregmek.core.interfaces.IHasExtraTileRecipeData;
 import mekanism.api.SerializerHelper;
 import mekanism.api.energy.IEnergyContainer;
 import mekanism.api.math.FloatingLong;
@@ -40,7 +40,7 @@ public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEn
 
     @Override
     public <RECIPE extends Recipe<?>> void writeBuffer(FriendlyByteBuf buffer, RECIPE recipe) {
-        if (recipe instanceof IHasExtraEnergyRequired energyRequiredHolder) {
+        if (recipe instanceof IHasExtraRecipeData energyRequiredHolder) {
             FloatingLong energyRequired = energyRequiredHolder.gregmek$getExtraEnergyRequired();
             energyRequired.writeToBuffer(buffer);
         }
@@ -48,14 +48,14 @@ public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEn
 
     @Override
     public <RECIPE extends Recipe<?>> void readBuffer(FriendlyByteBuf buffer, RECIPE recipe) {
-        if (recipe instanceof IHasExtraEnergyRequired energyRequiredHolder) {
+        if (recipe instanceof IHasExtraRecipeData energyRequiredHolder) {
             energyRequiredHolder.gregmek$setExtraEnergyRequired(FloatingLong.readFromBuffer(buffer));
         }
     }
 
     @Override
     public <TILE extends TileEntityMekanism> FloatingLong modifyBaseEnergyPerTick(FloatingLong baseEnergy, TILE tile) {
-        if (tile instanceof IHasRecipeExtraEnergyRequired extraEnergyRequired) {
+        if (tile instanceof IHasExtraTileRecipeData extraEnergyRequired) {
             return baseEnergy.add(extraEnergyRequired.gregmek$getRecipeExtraEnergyRequired());
         }
         return baseEnergy;
@@ -63,7 +63,7 @@ public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEn
 
     @Override
     public <RECIPE extends Recipe<?>> void readFromJson(JsonObject json, RECIPE recipe) {
-        if (recipe instanceof IHasExtraEnergyRequired energyRequiredHolder) {
+        if (recipe instanceof IHasExtraRecipeData energyRequiredHolder) {
             if (json.has("extraEnergyRequired")) {
                 FloatingLong energyRequired = SerializerHelper.getFloatingLong(json, "extraEnergyRequired");
                 energyRequiredHolder.gregmek$setExtraEnergyRequired(energyRequired);
@@ -75,7 +75,7 @@ public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEn
 
     @Override
     public <RECIPE extends MekanismRecipe> void onCachedRecipeChanged(@Nullable CachedRecipe<RECIPE> cachedRecipe, TileEntityMekanism tile) {
-        if (!(tile instanceof IHasRecipeExtraEnergyRequired tileHolder)) {
+        if (!(tile instanceof IHasExtraTileRecipeData tileHolder)) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEn
         }
 
         RECIPE recipe = cachedRecipe.getRecipe();
-        if (recipe instanceof IHasExtraEnergyRequired recipeHolder) {
+        if (recipe instanceof IHasExtraRecipeData recipeHolder) {
             tileHolder.gregmek$setRecipeExtraEnergyRequired(recipeHolder.gregmek$getExtraEnergyRequired());
         }
 

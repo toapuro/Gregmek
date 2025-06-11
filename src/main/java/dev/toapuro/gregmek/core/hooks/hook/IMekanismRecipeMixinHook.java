@@ -1,4 +1,4 @@
-package dev.toapuro.gregmek.core.hooks.impl;
+package dev.toapuro.gregmek.core.hooks.hook;
 
 import com.google.gson.JsonObject;
 import dev.toapuro.gregmek.core.hooks.IMixinHook;

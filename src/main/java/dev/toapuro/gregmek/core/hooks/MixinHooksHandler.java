@@ -25,7 +25,7 @@ public class MixinHooksHandler {
                 .filter(mixinHook -> mixinHook.getSide().isCompatibleTo(side))
                 .filter(type::isInstance)
                 .map(type::cast)
-                .sorted(Comparator.comparingInt(IMixinHook::getPriority))
+                .sorted(Comparator.comparingInt(IMixinHook::getPriority).reversed())
                 .toList();
     }
 
