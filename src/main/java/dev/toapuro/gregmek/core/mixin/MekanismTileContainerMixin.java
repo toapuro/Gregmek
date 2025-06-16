@@ -1,7 +1,6 @@
 package dev.toapuro.gregmek.core.mixin;
 
 import dev.toapuro.gregmek.common.helper.MixinHelper;
-import dev.toapuro.gregmek.common.utils.GregmekUtils;
 import dev.toapuro.gregmek.core.hooks.MixinHooks;
 import dev.toapuro.gregmek.core.hooks.hook.IMekanismContainerMixinHook;
 import dev.toapuro.gregmek.core.interfaces.IHasCircuitSlot;
@@ -29,7 +28,6 @@ public abstract class MekanismTileContainerMixin<TILE extends TileEntityMekanism
     @Final
     @NotNull
     protected TILE tile;
-
     @Unique
     private VirtualInventoryContainerSlot gregmek$circuitSlot;
 
@@ -37,13 +35,10 @@ public abstract class MekanismTileContainerMixin<TILE extends TileEntityMekanism
         super(type, id, inv);
     }
 
-    @SuppressWarnings("unchecked")
     @Inject(method = "addSlots", at = @At("HEAD"))
     protected void addSlots(CallbackInfo ci) {
-        super.addSlots();
         MixinHooks.invoke(IMekanismContainerMixinHook.class, hook ->
-                GregmekUtils.safeCast(MekanismTileContainer.class, this)
-                        .ifPresent(container -> hook.addSlots(container, tile, this::addSlot)));
+                hook.addSlots(MixinHelper.cast(this), tile, super::addSlot));
     }
 
     @Override
