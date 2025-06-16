@@ -3,6 +3,7 @@ package gregmek.common.recipe.builder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import gregmek.common.recipe.DataGenJsonConstants;
+import gregmek.common.recipe.builder.abstracts.BaseRecipeBuilder;
 import gregmek.common.recipe.pattern.RecipePattern;
 import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;

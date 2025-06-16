@@ -1,6 +1,7 @@
 package dev.toapuro.gregmek.core.mixin;
 
-import dev.toapuro.gregmek.core.hooks.MixinHooksHandler;
+import dev.toapuro.gregmek.content.tier.GMTier;
+import dev.toapuro.gregmek.core.hooks.MixinHooks;
 import dev.toapuro.gregmek.core.hooks.hook.IMekanismRecipeMixinHook;
 import dev.toapuro.gregmek.core.interfaces.IHasExtraTileRecipeData;
 import mekanism.api.math.FloatingLong;
@@ -29,6 +30,9 @@ public abstract class TileEntityRecipeMachineMixin<RECIPE extends MekanismRecipe
     @Unique
     private FloatingLong gregmek$recipeExtraEnergyRequired;
 
+    @Unique
+    private GMTier gregmek$recipeRecipeTier;
+
     public TileEntityRecipeMachineMixin(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state);
     }
@@ -36,20 +40,31 @@ public abstract class TileEntityRecipeMachineMixin<RECIPE extends MekanismRecipe
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<?> errorTypes, CallbackInfo ci) {
         this.gregmek$recipeExtraEnergyRequired = FloatingLong.ZERO;
+        this.gregmek$recipeRecipeTier = GMTier.PRIMITIVE;
     }
 
     @Override
-    public FloatingLong gregmek$getRecipeExtraEnergyRequired() {
+    public FloatingLong gregmek$getExtraEnergyRequired() {
         return this.gregmek$recipeExtraEnergyRequired;
     }
 
     @Override
-    public void gregmek$setRecipeExtraEnergyRequired(FloatingLong energyRequired) {
+    public void gregmek$setExtraEnergyRequired(FloatingLong energyRequired) {
         this.gregmek$recipeExtraEnergyRequired = energyRequired;
     }
 
+    @Override
+    public GMTier gregmek$getRecipeTier() {
+        return gregmek$recipeRecipeTier;
+    }
+
+    @Override
+    public void gregmek$setRecipeTier(GMTier tier) {
+        gregmek$recipeRecipeTier = tier;
+    }
+
     public void irecipe$onCachedRecipeChanged(@Nullable CachedRecipe<RECIPE> cachedRecipe, int cacheIndex) {
-        MixinHooksHandler.execute(IMekanismRecipeMixinHook.class, hook ->
+        MixinHooks.invoke(IMekanismRecipeMixinHook.class, hook ->
                 hook.onCachedRecipeChanged(cachedRecipe, this));
     }
 }

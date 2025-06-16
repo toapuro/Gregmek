@@ -2,7 +2,7 @@ package dev.toapuro.gregmek.core.feature;
 
 import com.google.gson.JsonObject;
 import dev.toapuro.gregmek.core.hooks.MixinCompatibleSide;
-import dev.toapuro.gregmek.core.hooks.MixinHooksHandler;
+import dev.toapuro.gregmek.core.hooks.MixinHooks;
 import dev.toapuro.gregmek.core.hooks.hook.IEnergyRequiredMixinHook;
 import dev.toapuro.gregmek.core.hooks.hook.IMekanismRecipeMixinHook;
 import dev.toapuro.gregmek.core.interfaces.IHasExtraRecipeData;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEnergyRequiredMixinHook {
     static {
-        MixinHooksHandler.registerHook(new ExtraEnergyRequiredFeature());
+        MixinHooks.registerHook(new ExtraEnergyRequiredFeature());
     }
 
     private ExtraEnergyRequiredFeature() {
@@ -56,7 +56,7 @@ public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEn
     @Override
     public <TILE extends TileEntityMekanism> FloatingLong modifyBaseEnergyPerTick(FloatingLong baseEnergy, TILE tile) {
         if (tile instanceof IHasExtraTileRecipeData extraEnergyRequired) {
-            return baseEnergy.add(extraEnergyRequired.gregmek$getRecipeExtraEnergyRequired());
+            return baseEnergy.add(extraEnergyRequired.gregmek$getExtraEnergyRequired());
         }
         return baseEnergy;
     }
@@ -68,7 +68,7 @@ public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEn
                 FloatingLong energyRequired = SerializerHelper.getFloatingLong(json, "extraEnergyRequired");
                 energyRequiredHolder.gregmek$setExtraEnergyRequired(energyRequired);
             } else {
-                energyRequiredHolder.gregmek$setExtraEnergyRequired(FloatingLong.ZERO); // FIX: maybe not needed
+                energyRequiredHolder.gregmek$setExtraEnergyRequired(FloatingLong.ZERO);
             }
         }
     }
@@ -80,13 +80,13 @@ public class ExtraEnergyRequiredFeature implements IMekanismRecipeMixinHook, IEn
         }
 
         if (cachedRecipe == null) {
-            tileHolder.gregmek$setRecipeExtraEnergyRequired(FloatingLong.ZERO);
+            tileHolder.gregmek$setExtraEnergyRequired(FloatingLong.ZERO);
             return;
         }
 
         RECIPE recipe = cachedRecipe.getRecipe();
         if (recipe instanceof IHasExtraRecipeData recipeHolder) {
-            tileHolder.gregmek$setRecipeExtraEnergyRequired(recipeHolder.gregmek$getExtraEnergyRequired());
+            tileHolder.gregmek$setExtraEnergyRequired(recipeHolder.gregmek$getExtraEnergyRequired());
         }
 
         List<IEnergyContainer> energyContainers = tile.getEnergyContainers(null);

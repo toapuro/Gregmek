@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 public enum GMTier {
+    UNKNOWN("Unknown", new int[]{0, 0, 0}, MapColor.COLOR_BLACK),
     PRIMITIVE("Primitive", new int[]{184, 165, 134}, MapColor.COLOR_BROWN),
     CRUDE("Crude", new int[]{117, 88, 19}, MapColor.COLOR_BROWN),
     INDUSTRIAL("Industrial", new int[]{95, 255, 184}, MapColor.COLOR_LIGHT_GREEN),

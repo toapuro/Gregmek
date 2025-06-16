@@ -7,10 +7,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class ProgrammedCircuit extends Item {
+public class ItemProgrammedCircuit extends Item {
     private final GMTier circuitTier;
 
-    public ProgrammedCircuit(Properties prop, GMTier circuitTier) {
+    public ItemProgrammedCircuit(Properties prop, GMTier circuitTier) {
         super(prop);
         this.circuitTier = circuitTier;
     }
@@ -18,5 +18,9 @@ public class ProgrammedCircuit extends Item {
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         return TextComponentUtil.build(circuitTier.getColor(), super.getName(stack));
+    }
+
+    public GMTier getCircuitTier() {
+        return circuitTier;
     }
 }

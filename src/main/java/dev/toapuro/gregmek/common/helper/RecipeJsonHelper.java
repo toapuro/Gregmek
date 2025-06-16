@@ -2,6 +2,7 @@ package dev.toapuro.gregmek.common.helper;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import dev.toapuro.gregmek.common.api.exceptions.GMRecipeError;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -42,7 +43,9 @@ public class RecipeJsonHelper {
             return values[ordinal];
         } else if (GsonHelper.isStringValue(enumElement)) {
             String string = enumElement.getAsString();
-            Optional<ENUM> first = Arrays.stream(values).filter(anEnum -> anEnum.name().equals(string)).findFirst();
+            Optional<ENUM> first = Arrays.stream(values)
+                    .filter(anEnum -> anEnum.name().equalsIgnoreCase(string))
+                    .findFirst();
             if (first.isEmpty()) {
                 throw GMRecipeError.ENUM_UNKNOWN;
             }
@@ -97,5 +100,25 @@ public class RecipeJsonHelper {
             fluidIngredients.add(ingredient);
         }
         return fluidIngredients;
+    }
+
+    public <T extends Enum<T>> T getEnum(JsonObject json, T[] values) {
+        if (GsonHelper.isNumberValue(json)) {
+            int index = json.getAsInt();
+            if (index >= values.length) {
+                throw new JsonSyntaxException("Array out of bounds");
+            }
+            return values[index];
+        } else if (GsonHelper.isStringValue(json)) {
+            String name = json.getAsString();
+            Optional<T> tEnum = Arrays.stream(values).filter(t -> t.name().equals(name)).findFirst();
+            if (tEnum.isPresent()) {
+                return tEnum.get();
+            } else {
+                throw new JsonSyntaxException("Could not parse enum " + name);
+            }
+        } else {
+            throw new JsonSyntaxException("Enum value only supports int, string");
+        }
     }
 }

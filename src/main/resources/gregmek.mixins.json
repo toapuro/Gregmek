@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "gregmek.refmap.json",
   "mixins": [
+    "BaseRecipeCategoryMixin",
     "ClientboundUpdateRecipesPacketMixin",
     "MachineEnergyContainerMixin",
     "MekanismRecipeMixin",
+    "MekanismTileContainerMixin",
     "RecipeManagerMixin",
     "TileEntityProgressMachineMixin",
     "TileEntityRecipeMachineMixin",
@@ -16,6 +18,7 @@
     "accessor.WrappedDeferredRegisterAccessor"
   ],
   "client": [
+    "GuiMekanismTileMixin"
   ],
   "injectors": {
     "defaultRequire": 1

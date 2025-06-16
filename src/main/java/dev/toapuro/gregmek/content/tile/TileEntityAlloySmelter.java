@@ -157,7 +157,7 @@ public class TileEntityAlloySmelter extends TileEntityProgressMachine<AlloySmelt
     }
 
     @Override
-    public TileComponentCircuit getCircuitComponent() {
+    public TileComponentCircuit gregmek$getCircuitComponent() {
         return this.circuitComponent;
     }
 }

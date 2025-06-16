@@ -218,7 +218,7 @@ public class TileEntityAssembler extends TileEntityProgressMachine<AssemblingRec
     }
 
     @Override
-    public TileComponentCircuit getCircuitComponent() {
+    public TileComponentCircuit gregmek$getCircuitComponent() {
         return this.circuitComponent;
     }
 }

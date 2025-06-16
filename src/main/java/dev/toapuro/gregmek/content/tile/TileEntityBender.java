@@ -168,7 +168,7 @@ public class TileEntityBender extends TileEntityProgressMachine<BendingRecipe> i
     }
 
     @Override
-    public TileComponentCircuit getCircuitComponent() {
+    public TileComponentCircuit gregmek$getCircuitComponent() {
         return this.circuitComponent;
     }
 }

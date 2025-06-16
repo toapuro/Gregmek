@@ -9,10 +9,10 @@ import mekanism.client.gui.element.GuiSideHolder;
 import mekanism.client.gui.element.slot.GuiVirtualSlot;
 import mekanism.client.gui.element.slot.SlotType;
 import mekanism.client.render.MekanismRenderer;
-import mekanism.common.tile.prefab.TileEntityConfigurableMachine;
+import mekanism.common.tile.base.TileEntityMekanism;
 import net.minecraft.client.gui.GuiGraphics;
 
-public class GuiCircuitConfigTab<TILE extends TileEntityConfigurableMachine & ITileProgrammable> extends GuiSideHolder implements IGuiWrapper {
+public class GuiCircuitConfigTab<TILE extends TileEntityMekanism & ITileProgrammable> extends GuiSideHolder implements IGuiWrapper {
     private final TILE tile;
 
     @SuppressWarnings("unchecked")

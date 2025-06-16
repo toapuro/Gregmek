@@ -1,4 +1,4 @@
-package gregmek.common.recipe.builder;
+package gregmek.common.recipe.builder.abstracts;
 
 import com.google.gson.JsonObject;
 import gregmek.common.recipe.DataGenJsonConstants;

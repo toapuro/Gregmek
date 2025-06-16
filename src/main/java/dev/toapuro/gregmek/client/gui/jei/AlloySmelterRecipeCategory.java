@@ -39,4 +39,5 @@ public class AlloySmelterRecipeCategory extends BaseRecipeCategory<AlloySmelting
         }
         this.initItem(builder, RecipeIngredientRole.OUTPUT, this.output, recipe.getOutputDefinition());
     }
+
 }

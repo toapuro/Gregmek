@@ -1,7 +1,7 @@
 package dev.toapuro.gregmek.content.registry;
 
 import dev.toapuro.gregmek.Gregmek;
-import dev.toapuro.gregmek.content.item.ProgrammedCircuit;
+import dev.toapuro.gregmek.content.item.ItemProgrammedCircuit;
 import dev.toapuro.gregmek.content.resource.GMResourceType;
 import dev.toapuro.gregmek.content.tier.GMTier;
 import mekanism.common.registration.impl.ItemDeferredRegister;
@@ -57,6 +57,6 @@ public class GMItems {
 
     private static ItemRegistryObject<Item> registerProgrammedCircuit(GMTier tier) {
         return ITEMS.register(tier.getLowerName() + "_programmed_circuit", () ->
-                new ProgrammedCircuit(new Item.Properties(), tier));
+                new ItemProgrammedCircuit(new Item.Properties(), tier));
     }
 }

@@ -22,7 +22,7 @@ public class GMTileContainer<TILE extends TileEntityMekanism> extends MekanismTi
     protected void addSlots() {
         super.addSlots();
         if (this.tile instanceof ITileProgrammable programmable) {
-            this.addSlot(this.circuitSlot = programmable.getCircuitComponent().getCircuitSlot().createContainerSlot());
+            this.addSlot(this.circuitSlot = programmable.gregmek$getCircuitComponent().getCircuitSlot().createContainerSlot());
         }
     }
 

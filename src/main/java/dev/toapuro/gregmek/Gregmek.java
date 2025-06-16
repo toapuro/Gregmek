@@ -3,6 +3,8 @@ package dev.toapuro.gregmek;
 import com.mojang.logging.LogUtils;
 import dev.toapuro.gregmek.content.registry.*;
 import dev.toapuro.gregmek.content.registry.recipe.GMRecipeType;
+import dev.toapuro.gregmek.core.hooks.IMixinHook;
+import dev.toapuro.gregmek.core.hooks.MixinHooks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -12,6 +14,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 
 @Mod(Gregmek.MODID)
 public class Gregmek {
@@ -33,6 +36,10 @@ public class Gregmek {
         GMRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         GMContainerTypes.CONTAINER_TYPES.register(modEventBus);
         GMCreativeTabs.CREATIVE_TABS.register(modEventBus);
+
+        for (IMixinHook hook : MixinHooks.getHooks(IMixinHook.class, MixinEnvironment.Side.UNKNOWN)) {
+            System.out.printf("Registered hook %s(%s)%n", hook.getHookId(), hook.isEnabled() ? "enabled" : "disabled");
+        }
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.CONFIG.getConfigSpec());
     }

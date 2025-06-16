@@ -1,6 +1,6 @@
 package dev.toapuro.gregmek.content.tile.inventory;
 
-import dev.toapuro.gregmek.content.item.ProgrammedCircuit;
+import dev.toapuro.gregmek.content.item.ItemProgrammedCircuit;
 import mekanism.api.IContentsListener;
 import mekanism.common.inventory.container.SelectedWindowData;
 import mekanism.common.inventory.container.slot.SlotOverlay;
@@ -14,7 +14,7 @@ public class CircuitVirtualInventorySlot extends BasicInventorySlot {
         super(
                 manualOnly,
                 alwaysTrueBi,
-                (stack) -> stack.getItem() instanceof ProgrammedCircuit,
+                (stack) -> stack.getItem() instanceof ItemProgrammedCircuit,
                 listener, 0, 0);
         this.setSlotOverlay(SlotOverlay.MODULE);
     }

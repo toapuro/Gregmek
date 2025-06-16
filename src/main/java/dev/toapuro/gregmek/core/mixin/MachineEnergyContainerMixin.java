@@ -1,7 +1,7 @@
 package dev.toapuro.gregmek.core.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import dev.toapuro.gregmek.core.hooks.MixinHooksHandler;
+import dev.toapuro.gregmek.core.hooks.MixinHooks;
 import dev.toapuro.gregmek.core.hooks.hook.IEnergyRequiredMixinHook;
 import mekanism.api.math.FloatingLong;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
@@ -20,7 +20,7 @@ public abstract class MachineEnergyContainerMixin<TILE extends TileEntityMekanis
     @ModifyReturnValue(method = "getBaseEnergyPerTick", at = @At("RETURN"))
     public FloatingLong modifyBaseEnergyPerTick(FloatingLong original) {
         FloatingLong modified = original.copy();
-        for (IEnergyRequiredMixinHook hook : MixinHooksHandler.getHooks(IEnergyRequiredMixinHook.class)) {
+        for (IEnergyRequiredMixinHook hook : MixinHooks.getHooks(IEnergyRequiredMixinHook.class)) {
             modified = hook.modifyBaseEnergyPerTick(modified, tile);
         }
         return modified;
